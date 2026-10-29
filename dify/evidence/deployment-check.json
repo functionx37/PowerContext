@@ -1,0 +1,28 @@
+{
+  "target_dify_version": "1.9.1",
+  "dsl_version": "0.4.0",
+  "official_node_data_models_checked": [
+    "grudge-shop-ai.yml:start",
+    "grudge-shop-ai.yml:encode",
+    "grudge-shop-ai.yml:recall",
+    "grudge-shop-ai.yml:check",
+    "grudge-shop-ai.yml:judge",
+    "grudge-shop-ai.yml:save",
+    "grudge-shop-ai.yml:saved_check",
+    "grudge-shop-ai.yml:llm_input",
+    "grudge-shop-ai.yml:narrate",
+    "grudge-shop-ai.yml:render",
+    "grudge-shop-ai.yml:end",
+    "grudge-shop-rules.yml:start",
+    "grudge-shop-rules.yml:encode",
+    "grudge-shop-rules.yml:recall",
+    "grudge-shop-rules.yml:check",
+    "grudge-shop-rules.yml:judge",
+    "grudge-shop-rules.yml:save",
+    "grudge-shop-rules.yml:render",
+    "grudge-shop-rules.yml:end"
+  ],
+  "method": "Official node Pydantic class definitions; imported framework dependencies supplied as stand-ins. Not a full Dify runtime or import.",
+  "dify_runtime_verified": false,
+  "official_compose_with_project_override_config_check": "passed"
+}

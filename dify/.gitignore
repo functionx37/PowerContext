@@ -1,0 +1,8 @@
+.venv/
+.cache/
+.runtime/
+__pycache__/
+*.pyc
+.env
+evidence/local-*.json
+dist/

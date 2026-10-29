@@ -1,0 +1,884 @@
+{
+  "created_at": "2026-10-29T14:36:04.550446+00:00",
+  "execution_mode": "dsl-code-and-real-http; NOT a Dify runtime test",
+  "powercontext_version": "1.4.1",
+  "dify_runtime_verified": false,
+  "live_model_verified": false,
+  "checks": [
+    "首次恶作剧写入：记仇 2、信任 -1",
+    "新请求从 PowerContext 召回具体恶作剧",
+    "重复请求返回原回合且不重复扣资源",
+    "重放旧请求不会回滚存档",
+    "关系修复及徽章：和好如初",
+    "隐藏菜单解锁",
+    "通关玩法反馈完整",
+    "其他玩家独立初始状态",
+    "未提供桥接密钥拒绝访问",
+    "重复请求编号绑定原始行动",
+    "过期回合禁止覆盖新存档",
+    "拒绝的写入没有改变真实记忆"
+  ],
+  "player_id": "judge-94d23ca83a1f",
+  "turns": [
+    {
+      "input": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "恶作剧",
+        "line": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+        "request_id": "001fdff9573b43b4b51b2d24a03a956e"
+      },
+      "output": {
+        "result": "【规则版（未调用模型）】\n你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。\n\n---\n回合 1/20 · 记仇 2/5 · 信任 -1 · 硬币 3\n徽章：尚未获得\n下一步：打招呼 / 恶作剧 / 送礼 / 道歉 / 打听传闻\n换会话时保留玩家编号，换新编号可开新局。\n玩家：judge-94d23ca83a1f · 请求：001fdff9573b43b4b51b2d24a03a956e\n记忆已保存至 PowerContext",
+        "state": "{\"turn\": 1, \"grudge\": 2, \"trust\": -1, \"coins\": 3, \"pranks\": 1, \"repairs\": 0, \"last_prank\": \"把招牌改成“咸鱼收容所”\\n老板说：\\\"别闹\\\"\", \"badges\": []}",
+        "memory_ref": "{\"family\": \"atomic-memory\", \"artifact_id\": \"art_5245b39429dc457cb1ab74e64aea0b76\", \"revision\": 1}"
+      }
+    },
+    {
+      "input": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "打招呼",
+        "line": "",
+        "request_id": "d76cf513c9f1451fac3cde43c56c8a11"
+      },
+      "output": {
+        "result": "【规则版（未调用模型）】\n老板把柜台挪远半米：上回你干的好事，我可记得。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。\n\n---\n回合 2/20 · 记仇 2/5 · 信任 -1 · 硬币 3\n徽章：尚未获得\n下一步：打招呼 / 恶作剧 / 送礼 / 道歉 / 打听传闻\n换会话时保留玩家编号，换新编号可开新局。\n玩家：judge-94d23ca83a1f · 请求：d76cf513c9f1451fac3cde43c56c8a11\n记忆已保存至 PowerContext",
+        "state": "{\"turn\": 2, \"grudge\": 2, \"trust\": -1, \"coins\": 3, \"pranks\": 1, \"repairs\": 0, \"last_prank\": \"把招牌改成“咸鱼收容所”\\n老板说：\\\"别闹\\\"\", \"badges\": []}",
+        "memory_ref": "{\"family\": \"atomic-memory\", \"artifact_id\": \"art_5310598f63a64ba984b2fcc533514801\", \"revision\": 1}"
+      }
+    },
+    {
+      "input": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "道歉",
+        "line": "我错了，这次真的。",
+        "request_id": "997aafb656ca41c1951bd615d529202a"
+      },
+      "output": {
+        "result": "【规则版（未调用模型）】\n老板把你的道歉折成纸鹤，放在收银台上：这次先记你一分。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。\n\n---\n回合 3/20 · 记仇 1/5 · 信任 0 · 硬币 3\n徽章：尚未获得\n下一步：打招呼 / 恶作剧 / 送礼 / 道歉 / 打听传闻\n换会话时保留玩家编号，换新编号可开新局。\n玩家：judge-94d23ca83a1f · 请求：997aafb656ca41c1951bd615d529202a\n记忆已保存至 PowerContext",
+        "state": "{\"turn\": 3, \"grudge\": 1, \"trust\": 0, \"coins\": 3, \"pranks\": 1, \"repairs\": 1, \"last_prank\": \"把招牌改成“咸鱼收容所”\\n老板说：\\\"别闹\\\"\", \"badges\": []}",
+        "memory_ref": "{\"family\": \"atomic-memory\", \"artifact_id\": \"art_fd924aeae9e84d75bd51dfb68917db80\", \"revision\": 1}"
+      }
+    },
+    {
+      "input": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "送礼",
+        "line": "",
+        "request_id": "0a6f517ba4ae40b3b301e6bbfa0d8315"
+      },
+      "output": {
+        "result": "【规则版（未调用模型）】\n老板接过一枚硬币买的桂花糕：礼物可以收，账本得慢慢改。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。\n\n---\n回合 4/20 · 记仇 0/5 · 信任 2 · 硬币 2\n徽章：和好如初\n下一步：打招呼 / 恶作剧 / 送礼 / 道歉 / 打听传闻\n换会话时保留玩家编号，换新编号可开新局。\n玩家：judge-94d23ca83a1f · 请求：0a6f517ba4ae40b3b301e6bbfa0d8315\n记忆已保存至 PowerContext",
+        "state": "{\"turn\": 4, \"grudge\": 0, \"trust\": 2, \"coins\": 2, \"pranks\": 1, \"repairs\": 2, \"last_prank\": \"把招牌改成“咸鱼收容所”\\n老板说：\\\"别闹\\\"\", \"badges\": [\"和好如初\"]}",
+        "memory_ref": "{\"family\": \"atomic-memory\", \"artifact_id\": \"art_b586b5e2808b49bb9aace4466a33a214\", \"revision\": 1}"
+      }
+    },
+    {
+      "input": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "送礼",
+        "line": "",
+        "request_id": "dee9373fdc0b472299de421d2dbc2c34"
+      },
+      "output": {
+        "result": "【规则版（未调用模型）】\n老板接过一枚硬币买的桂花糕：礼物可以收，账本得慢慢改。 老板终于递给你隐藏菜单，熟客挑战成功！\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。\n\n---\n回合 5/20 · 记仇 0/5 · 信任 4 · 硬币 1\n徽章：和好如初、隐藏菜单\n下一步：打招呼 / 恶作剧 / 送礼 / 道歉 / 打听传闻\n换会话时保留玩家编号，换新编号可开新局。\n玩家：judge-94d23ca83a1f · 请求：dee9373fdc0b472299de421d2dbc2c34\n记忆已保存至 PowerContext",
+        "state": "{\"turn\": 5, \"grudge\": 0, \"trust\": 4, \"coins\": 1, \"pranks\": 1, \"repairs\": 3, \"last_prank\": \"把招牌改成“咸鱼收容所”\\n老板说：\\\"别闹\\\"\", \"badges\": [\"和好如初\", \"隐藏菜单\"]}",
+        "memory_ref": "{\"family\": \"atomic-memory\", \"artifact_id\": \"art_49efb77d78d7462ab256df5e8651d863\", \"revision\": 1}"
+      }
+    },
+    {
+      "input": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "打听传闻",
+        "line": "",
+        "request_id": "913ffe1510a8426cba242fa83df09de1"
+      },
+      "output": {
+        "result": "【规则版（未调用模型）】\n老板掀开隐藏菜单：今日特供，后悔药味汽水。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。\n\n---\n回合 6/20 · 记仇 0/5 · 信任 4 · 硬币 1\n徽章：和好如初、隐藏菜单\n下一步：打招呼 / 恶作剧 / 送礼 / 道歉 / 打听传闻\n换会话时保留玩家编号，换新编号可开新局。\n玩家：judge-94d23ca83a1f · 请求：913ffe1510a8426cba242fa83df09de1\n记忆已保存至 PowerContext",
+        "state": "{\"turn\": 6, \"grudge\": 0, \"trust\": 4, \"coins\": 1, \"pranks\": 1, \"repairs\": 3, \"last_prank\": \"把招牌改成“咸鱼收容所”\\n老板说：\\\"别闹\\\"\", \"badges\": [\"和好如初\", \"隐藏菜单\"]}",
+        "memory_ref": "{\"family\": \"atomic-memory\", \"artifact_id\": \"art_3b51a0b0191e451584eb2a5a41510cea\", \"revision\": 1}"
+      }
+    }
+  ],
+  "records": [
+    {
+      "node": "recall",
+      "url": "http://127.0.0.1:8765/v1/turns/prepare",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "恶作剧",
+        "line": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+        "request_id": "001fdff9573b43b4b51b2d24a03a956e"
+      },
+      "status_code": 200,
+      "response": {
+        "input": {
+          "player_id": "judge-94d23ca83a1f",
+          "action": "恶作剧",
+          "line": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "request_id": "001fdff9573b43b4b51b2d24a03a956e"
+        },
+        "state": {
+          "turn": 0,
+          "grudge": 0,
+          "trust": 0,
+          "coins": 3,
+          "pranks": 0,
+          "repairs": 0,
+          "last_prank": "",
+          "badges": []
+        },
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "recalled_turns": 0,
+        "replay": null,
+        "memory_refs": []
+      }
+    },
+    {
+      "node": "save",
+      "url": "http://127.0.0.1:8765/v1/turns/commit",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "恶作剧",
+        "line": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+        "request_id": "001fdff9573b43b4b51b2d24a03a956e",
+        "expected_turn": 0,
+        "state": {
+          "turn": 1,
+          "grudge": 2,
+          "trust": -1,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 0,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": []
+        },
+        "event": "你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。",
+        "narrative": "你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。"
+      },
+      "status_code": 200,
+      "response": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "恶作剧",
+        "line": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+        "request_id": "001fdff9573b43b4b51b2d24a03a956e",
+        "expected_turn": 0,
+        "state": {
+          "turn": 1,
+          "grudge": 2,
+          "trust": -1,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 0,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": []
+        },
+        "event": "你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。",
+        "narrative": "你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。",
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "memory_ref": {
+          "family": "atomic-memory",
+          "artifact_id": "art_5245b39429dc457cb1ab74e64aea0b76",
+          "revision": 1
+        },
+        "replayed": false
+      }
+    },
+    {
+      "node": "recall",
+      "url": "http://127.0.0.1:8765/v1/turns/prepare",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "打招呼",
+        "line": "",
+        "request_id": "d76cf513c9f1451fac3cde43c56c8a11"
+      },
+      "status_code": 200,
+      "response": {
+        "input": {
+          "player_id": "judge-94d23ca83a1f",
+          "action": "打招呼",
+          "line": "",
+          "request_id": "d76cf513c9f1451fac3cde43c56c8a11"
+        },
+        "state": {
+          "turn": 1,
+          "grudge": 2,
+          "trust": -1,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 0,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": []
+        },
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "recalled_turns": 1,
+        "replay": null,
+        "memory_refs": [
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_5245b39429dc457cb1ab74e64aea0b76",
+            "revision": 1
+          }
+        ]
+      }
+    },
+    {
+      "node": "save",
+      "url": "http://127.0.0.1:8765/v1/turns/commit",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "打招呼",
+        "line": "",
+        "request_id": "d76cf513c9f1451fac3cde43c56c8a11",
+        "expected_turn": 1,
+        "state": {
+          "turn": 2,
+          "grudge": 2,
+          "trust": -1,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 0,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": []
+        },
+        "event": "老板把柜台挪远半米：上回你干的好事，我可记得。",
+        "narrative": "老板把柜台挪远半米：上回你干的好事，我可记得。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。"
+      },
+      "status_code": 200,
+      "response": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "打招呼",
+        "line": "",
+        "request_id": "d76cf513c9f1451fac3cde43c56c8a11",
+        "expected_turn": 1,
+        "state": {
+          "turn": 2,
+          "grudge": 2,
+          "trust": -1,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 0,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": []
+        },
+        "event": "老板把柜台挪远半米：上回你干的好事，我可记得。",
+        "narrative": "老板把柜台挪远半米：上回你干的好事，我可记得。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。",
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "memory_ref": {
+          "family": "atomic-memory",
+          "artifact_id": "art_5310598f63a64ba984b2fcc533514801",
+          "revision": 1
+        },
+        "replayed": false
+      }
+    },
+    {
+      "node": "recall",
+      "url": "http://127.0.0.1:8765/v1/turns/prepare",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "恶作剧",
+        "line": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+        "request_id": "001fdff9573b43b4b51b2d24a03a956e"
+      },
+      "status_code": 200,
+      "response": {
+        "input": {
+          "player_id": "judge-94d23ca83a1f",
+          "action": "恶作剧",
+          "line": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "request_id": "001fdff9573b43b4b51b2d24a03a956e"
+        },
+        "state": {
+          "turn": 2,
+          "grudge": 2,
+          "trust": -1,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 0,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": []
+        },
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "recalled_turns": 2,
+        "replay": {
+          "player_id": "judge-94d23ca83a1f",
+          "action": "恶作剧",
+          "line": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "request_id": "001fdff9573b43b4b51b2d24a03a956e",
+          "expected_turn": 0,
+          "state": {
+            "turn": 1,
+            "grudge": 2,
+            "trust": -1,
+            "coins": 3,
+            "pranks": 1,
+            "repairs": 0,
+            "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+            "badges": []
+          },
+          "event": "你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。",
+          "narrative": "你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。"
+        },
+        "memory_refs": [
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_5245b39429dc457cb1ab74e64aea0b76",
+            "revision": 1
+          },
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_5310598f63a64ba984b2fcc533514801",
+            "revision": 1
+          }
+        ]
+      }
+    },
+    {
+      "node": "save",
+      "url": "http://127.0.0.1:8765/v1/turns/commit",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "恶作剧",
+        "line": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+        "request_id": "001fdff9573b43b4b51b2d24a03a956e",
+        "expected_turn": 0,
+        "state": {
+          "turn": 1,
+          "grudge": 2,
+          "trust": -1,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 0,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": []
+        },
+        "event": "你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。",
+        "narrative": "你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。"
+      },
+      "status_code": 200,
+      "response": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "恶作剧",
+        "line": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+        "request_id": "001fdff9573b43b4b51b2d24a03a956e",
+        "expected_turn": 0,
+        "state": {
+          "turn": 1,
+          "grudge": 2,
+          "trust": -1,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 0,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": []
+        },
+        "event": "你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。",
+        "narrative": "你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。",
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "memory_ref": {
+          "family": "atomic-memory",
+          "artifact_id": "art_5245b39429dc457cb1ab74e64aea0b76",
+          "revision": 1
+        },
+        "replayed": true
+      }
+    },
+    {
+      "node": "recall",
+      "url": "http://127.0.0.1:8765/v1/turns/prepare",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "道歉",
+        "line": "我错了，这次真的。",
+        "request_id": "997aafb656ca41c1951bd615d529202a"
+      },
+      "status_code": 200,
+      "response": {
+        "input": {
+          "player_id": "judge-94d23ca83a1f",
+          "action": "道歉",
+          "line": "我错了，这次真的。",
+          "request_id": "997aafb656ca41c1951bd615d529202a"
+        },
+        "state": {
+          "turn": 2,
+          "grudge": 2,
+          "trust": -1,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 0,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": []
+        },
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "recalled_turns": 2,
+        "replay": null,
+        "memory_refs": [
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_5245b39429dc457cb1ab74e64aea0b76",
+            "revision": 1
+          },
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_5310598f63a64ba984b2fcc533514801",
+            "revision": 1
+          }
+        ]
+      }
+    },
+    {
+      "node": "save",
+      "url": "http://127.0.0.1:8765/v1/turns/commit",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "道歉",
+        "line": "我错了，这次真的。",
+        "request_id": "997aafb656ca41c1951bd615d529202a",
+        "expected_turn": 2,
+        "state": {
+          "turn": 3,
+          "grudge": 1,
+          "trust": 0,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 1,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": []
+        },
+        "event": "老板把你的道歉折成纸鹤，放在收银台上：这次先记你一分。",
+        "narrative": "老板把你的道歉折成纸鹤，放在收银台上：这次先记你一分。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。"
+      },
+      "status_code": 200,
+      "response": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "道歉",
+        "line": "我错了，这次真的。",
+        "request_id": "997aafb656ca41c1951bd615d529202a",
+        "expected_turn": 2,
+        "state": {
+          "turn": 3,
+          "grudge": 1,
+          "trust": 0,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 1,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": []
+        },
+        "event": "老板把你的道歉折成纸鹤，放在收银台上：这次先记你一分。",
+        "narrative": "老板把你的道歉折成纸鹤，放在收银台上：这次先记你一分。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。",
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "memory_ref": {
+          "family": "atomic-memory",
+          "artifact_id": "art_fd924aeae9e84d75bd51dfb68917db80",
+          "revision": 1
+        },
+        "replayed": false
+      }
+    },
+    {
+      "node": "recall",
+      "url": "http://127.0.0.1:8765/v1/turns/prepare",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "送礼",
+        "line": "",
+        "request_id": "0a6f517ba4ae40b3b301e6bbfa0d8315"
+      },
+      "status_code": 200,
+      "response": {
+        "input": {
+          "player_id": "judge-94d23ca83a1f",
+          "action": "送礼",
+          "line": "",
+          "request_id": "0a6f517ba4ae40b3b301e6bbfa0d8315"
+        },
+        "state": {
+          "turn": 3,
+          "grudge": 1,
+          "trust": 0,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 1,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": []
+        },
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "recalled_turns": 3,
+        "replay": null,
+        "memory_refs": [
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_5245b39429dc457cb1ab74e64aea0b76",
+            "revision": 1
+          },
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_5310598f63a64ba984b2fcc533514801",
+            "revision": 1
+          },
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_fd924aeae9e84d75bd51dfb68917db80",
+            "revision": 1
+          }
+        ]
+      }
+    },
+    {
+      "node": "save",
+      "url": "http://127.0.0.1:8765/v1/turns/commit",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "送礼",
+        "line": "",
+        "request_id": "0a6f517ba4ae40b3b301e6bbfa0d8315",
+        "expected_turn": 3,
+        "state": {
+          "turn": 4,
+          "grudge": 0,
+          "trust": 2,
+          "coins": 2,
+          "pranks": 1,
+          "repairs": 2,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": [
+            "和好如初"
+          ]
+        },
+        "event": "老板接过一枚硬币买的桂花糕：礼物可以收，账本得慢慢改。",
+        "narrative": "老板接过一枚硬币买的桂花糕：礼物可以收，账本得慢慢改。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。"
+      },
+      "status_code": 200,
+      "response": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "送礼",
+        "line": "",
+        "request_id": "0a6f517ba4ae40b3b301e6bbfa0d8315",
+        "expected_turn": 3,
+        "state": {
+          "turn": 4,
+          "grudge": 0,
+          "trust": 2,
+          "coins": 2,
+          "pranks": 1,
+          "repairs": 2,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": [
+            "和好如初"
+          ]
+        },
+        "event": "老板接过一枚硬币买的桂花糕：礼物可以收，账本得慢慢改。",
+        "narrative": "老板接过一枚硬币买的桂花糕：礼物可以收，账本得慢慢改。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。",
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "memory_ref": {
+          "family": "atomic-memory",
+          "artifact_id": "art_b586b5e2808b49bb9aace4466a33a214",
+          "revision": 1
+        },
+        "replayed": false
+      }
+    },
+    {
+      "node": "recall",
+      "url": "http://127.0.0.1:8765/v1/turns/prepare",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "送礼",
+        "line": "",
+        "request_id": "dee9373fdc0b472299de421d2dbc2c34"
+      },
+      "status_code": 200,
+      "response": {
+        "input": {
+          "player_id": "judge-94d23ca83a1f",
+          "action": "送礼",
+          "line": "",
+          "request_id": "dee9373fdc0b472299de421d2dbc2c34"
+        },
+        "state": {
+          "turn": 4,
+          "grudge": 0,
+          "trust": 2,
+          "coins": 2,
+          "pranks": 1,
+          "repairs": 2,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": [
+            "和好如初"
+          ]
+        },
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "recalled_turns": 4,
+        "replay": null,
+        "memory_refs": [
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_5310598f63a64ba984b2fcc533514801",
+            "revision": 1
+          },
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_fd924aeae9e84d75bd51dfb68917db80",
+            "revision": 1
+          },
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_b586b5e2808b49bb9aace4466a33a214",
+            "revision": 1
+          }
+        ]
+      }
+    },
+    {
+      "node": "save",
+      "url": "http://127.0.0.1:8765/v1/turns/commit",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "送礼",
+        "line": "",
+        "request_id": "dee9373fdc0b472299de421d2dbc2c34",
+        "expected_turn": 4,
+        "state": {
+          "turn": 5,
+          "grudge": 0,
+          "trust": 4,
+          "coins": 1,
+          "pranks": 1,
+          "repairs": 3,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": [
+            "和好如初",
+            "隐藏菜单"
+          ]
+        },
+        "event": "老板接过一枚硬币买的桂花糕：礼物可以收，账本得慢慢改。 老板终于递给你隐藏菜单，熟客挑战成功！",
+        "narrative": "老板接过一枚硬币买的桂花糕：礼物可以收，账本得慢慢改。 老板终于递给你隐藏菜单，熟客挑战成功！\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。"
+      },
+      "status_code": 200,
+      "response": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "送礼",
+        "line": "",
+        "request_id": "dee9373fdc0b472299de421d2dbc2c34",
+        "expected_turn": 4,
+        "state": {
+          "turn": 5,
+          "grudge": 0,
+          "trust": 4,
+          "coins": 1,
+          "pranks": 1,
+          "repairs": 3,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": [
+            "和好如初",
+            "隐藏菜单"
+          ]
+        },
+        "event": "老板接过一枚硬币买的桂花糕：礼物可以收，账本得慢慢改。 老板终于递给你隐藏菜单，熟客挑战成功！",
+        "narrative": "老板接过一枚硬币买的桂花糕：礼物可以收，账本得慢慢改。 老板终于递给你隐藏菜单，熟客挑战成功！\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。",
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "memory_ref": {
+          "family": "atomic-memory",
+          "artifact_id": "art_49efb77d78d7462ab256df5e8651d863",
+          "revision": 1
+        },
+        "replayed": false
+      }
+    },
+    {
+      "node": "recall",
+      "url": "http://127.0.0.1:8765/v1/turns/prepare",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "打听传闻",
+        "line": "",
+        "request_id": "913ffe1510a8426cba242fa83df09de1"
+      },
+      "status_code": 200,
+      "response": {
+        "input": {
+          "player_id": "judge-94d23ca83a1f",
+          "action": "打听传闻",
+          "line": "",
+          "request_id": "913ffe1510a8426cba242fa83df09de1"
+        },
+        "state": {
+          "turn": 5,
+          "grudge": 0,
+          "trust": 4,
+          "coins": 1,
+          "pranks": 1,
+          "repairs": 3,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": [
+            "和好如初",
+            "隐藏菜单"
+          ]
+        },
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "recalled_turns": 5,
+        "replay": null,
+        "memory_refs": [
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_fd924aeae9e84d75bd51dfb68917db80",
+            "revision": 1
+          },
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_b586b5e2808b49bb9aace4466a33a214",
+            "revision": 1
+          },
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_49efb77d78d7462ab256df5e8651d863",
+            "revision": 1
+          }
+        ]
+      }
+    },
+    {
+      "node": "save",
+      "url": "http://127.0.0.1:8765/v1/turns/commit",
+      "request": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "打听传闻",
+        "line": "",
+        "request_id": "913ffe1510a8426cba242fa83df09de1",
+        "expected_turn": 5,
+        "state": {
+          "turn": 6,
+          "grudge": 0,
+          "trust": 4,
+          "coins": 1,
+          "pranks": 1,
+          "repairs": 3,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": [
+            "和好如初",
+            "隐藏菜单"
+          ]
+        },
+        "event": "老板掀开隐藏菜单：今日特供，后悔药味汽水。",
+        "narrative": "老板掀开隐藏菜单：今日特供，后悔药味汽水。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。"
+      },
+      "status_code": 200,
+      "response": {
+        "player_id": "judge-94d23ca83a1f",
+        "action": "打听传闻",
+        "line": "",
+        "request_id": "913ffe1510a8426cba242fa83df09de1",
+        "expected_turn": 5,
+        "state": {
+          "turn": 6,
+          "grudge": 0,
+          "trust": 4,
+          "coins": 1,
+          "pranks": 1,
+          "repairs": 3,
+          "last_prank": "把招牌改成“咸鱼收容所”\n老板说：\"别闹\"",
+          "badges": [
+            "和好如初",
+            "隐藏菜单"
+          ]
+        },
+        "event": "老板掀开隐藏菜单：今日特供，后悔药味汽水。",
+        "narrative": "老板掀开隐藏菜单：今日特供，后悔药味汽水。\n记忆回声：你曾经“把招牌改成“咸鱼收容所”\n老板说：\"别闹\"”。",
+        "scope_id": "scp_1fhgad0sp5166tr6439hkmxzqf",
+        "memory_ref": {
+          "family": "atomic-memory",
+          "artifact_id": "art_3b51a0b0191e451584eb2a5a41510cea",
+          "revision": 1
+        },
+        "replayed": false
+      }
+    },
+    {
+      "node": "recall",
+      "url": "http://127.0.0.1:8765/v1/turns/prepare",
+      "request": {
+        "player_id": "judge-94d23ca83a1f-other",
+        "action": "打招呼",
+        "line": "",
+        "request_id": "a0ad840e7da54c6aaecd870271cb7a95"
+      },
+      "status_code": 200,
+      "response": {
+        "input": {
+          "player_id": "judge-94d23ca83a1f-other",
+          "action": "打招呼",
+          "line": "",
+          "request_id": "a0ad840e7da54c6aaecd870271cb7a95"
+        },
+        "state": {
+          "turn": 0,
+          "grudge": 0,
+          "trust": 0,
+          "coins": 3,
+          "pranks": 0,
+          "repairs": 0,
+          "last_prank": "",
+          "badges": []
+        },
+        "scope_id": "scp_5m9jrv4nxe89mwtes0qfs717a2",
+        "recalled_turns": 0,
+        "replay": null,
+        "memory_refs": []
+      }
+    },
+    {
+      "node": "save",
+      "url": "http://127.0.0.1:8765/v1/turns/commit",
+      "request": {
+        "player_id": "judge-94d23ca83a1f-other",
+        "action": "打招呼",
+        "line": "",
+        "request_id": "a0ad840e7da54c6aaecd870271cb7a95",
+        "expected_turn": 0,
+        "state": {
+          "turn": 1,
+          "grudge": 0,
+          "trust": 1,
+          "coins": 3,
+          "pranks": 0,
+          "repairs": 0,
+          "last_prank": "",
+          "badges": []
+        },
+        "event": "老板从报纸后探出头：欢迎来到不太正经杂货铺，熟客有隐藏菜单。",
+        "narrative": "老板从报纸后探出头：欢迎来到不太正经杂货铺，熟客有隐藏菜单。"
+      },
+      "status_code": 200,
+      "response": {
+        "player_id": "judge-94d23ca83a1f-other",
+        "action": "打招呼",
+        "line": "",
+        "request_id": "a0ad840e7da54c6aaecd870271cb7a95",
+        "expected_turn": 0,
+        "state": {
+          "turn": 1,
+          "grudge": 0,
+          "trust": 1,
+          "coins": 3,
+          "pranks": 0,
+          "repairs": 0,
+          "last_prank": "",
+          "badges": []
+        },
+        "event": "老板从报纸后探出头：欢迎来到不太正经杂货铺，熟客有隐藏菜单。",
+        "narrative": "老板从报纸后探出头：欢迎来到不太正经杂货铺，熟客有隐藏菜单。",
+        "scope_id": "scp_5m9jrv4nxe89mwtes0qfs717a2",
+        "memory_ref": {
+          "family": "atomic-memory",
+          "artifact_id": "art_a635c499af1b42f1801c9dbf5448c486",
+          "revision": 1
+        },
+        "replayed": false
+      }
+    }
+  ],
+  "result": "passed"
+}

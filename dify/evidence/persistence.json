@@ -1,0 +1,67 @@
+{
+  "created_at": "2026-10-29T14:22:35.680742+00:00",
+  "result": "passed",
+  "execution_mode": "real-powercontext-and-bridge-process-restart",
+  "runs": [
+    {
+      "phase": "before_restart",
+      "result": {
+        "player_id": "restart-player",
+        "action": "恶作剧",
+        "line": "把算盘换成了爆米花",
+        "request_id": "before-restart",
+        "expected_turn": 0,
+        "state": {
+          "turn": 1,
+          "grudge": 2,
+          "trust": -1,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 0,
+          "last_prank": "把算盘换成了爆米花",
+          "badges": []
+        },
+        "event": "你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。",
+        "narrative": "你刚捣完乱，老板就把你的名字写进了《本街离谱人物志》。\n记忆回声：你曾经“把算盘换成了爆米花”。",
+        "scope_id": "scp_19ja1515v5ftve2c4c4dcxzpwv",
+        "memory_ref": {
+          "family": "atomic-memory",
+          "artifact_id": "art_57748949637f4551ac5f54eb0e959ed9",
+          "revision": 1
+        },
+        "replayed": false
+      }
+    },
+    {
+      "phase": "after_restart",
+      "result": {
+        "input": {
+          "player_id": "restart-player",
+          "action": "打招呼",
+          "line": "",
+          "request_id": "after-restart"
+        },
+        "state": {
+          "turn": 1,
+          "grudge": 2,
+          "trust": -1,
+          "coins": 3,
+          "pranks": 1,
+          "repairs": 0,
+          "last_prank": "把算盘换成了爆米花",
+          "badges": []
+        },
+        "scope_id": "scp_19ja1515v5ftve2c4c4dcxzpwv",
+        "recalled_turns": 1,
+        "replay": null,
+        "memory_refs": [
+          {
+            "family": "atomic-memory",
+            "artifact_id": "art_57748949637f4551ac5f54eb0e959ed9",
+            "revision": 1
+          }
+        ]
+      }
+    }
+  ]
+}
