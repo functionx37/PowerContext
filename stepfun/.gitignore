@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.data/
+public/models/
+reports/*.json
+!reports/model-manifest.json
+!reports/evaluation.json
+!reports/db-smoke.json
+!reports/validation.json
+reports/*.csv
+reports/*.png
+*.log

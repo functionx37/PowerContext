@@ -1,0 +1,31 @@
+{
+  "name": "stepfun-local-atlas",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "tsx server/index.ts",
+    "build": "tsc --noEmit && vite build",
+    "start": "tsx server/index.ts --production",
+    "test": "tsx --test tests/*.test.ts",
+    "test:db": "tsx scripts/db-smoke.ts",
+    "model:fetch": "node scripts/fetch-model.mjs",
+    "report": "node scripts/report.mjs"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "3.8.1",
+    "@seekdb/js-bindings": "1.4.0",
+    "dotenv": "16.6.1",
+    "express": "5.1.0",
+    "seekdb": "1.4.0",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.3",
+    "@types/node": "22.15.30",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "vite": "6.4.1"
+  }
+}

@@ -1,0 +1,2741 @@
+{
+  "schema": 1,
+  "measuredAt": "2026-10-29T14:39:03.659Z",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+  "hardwareConcurrency": 16,
+  "deviceMemoryGB": 32,
+  "secureContext": true,
+  "model": {
+    "id": "Xenova/bge-small-zh-v1.5",
+    "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+    "dimension": 512,
+    "pooling": "cls",
+    "queryPrefix": "为这个句子生成表示以用于检索相关文章："
+  },
+  "runtime": "Transformers.js 3.8.1 / ONNX Runtime Web",
+  "database": {
+    "mode": "embedded",
+    "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+  },
+  "corpusSha256": "37546e3e418d3f214f74bc2279649486e800a110ecdcc48210bd86ea75d408b8",
+  "queriesSha256": "a636ac1985a14b1ccb133365fb933df65f1a0ba16be4dfa57ee725b3ae728f10",
+  "sourceCount": 18,
+  "chunkCount": 18,
+  "queryCount": 12,
+  "trials": 3,
+  "k": 5,
+  "modelManifest": {
+    "id": "Xenova/bge-small-zh-v1.5",
+    "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+    "measuredAt": "2026-10-29T14:36:22.499Z",
+    "downloadHost": "https://hf-mirror.com",
+    "files": [
+      {
+        "file": "config.json",
+        "bytes": 716,
+        "sha256": "d4193ead3a810fd694fa8a31d7fc72fbaebc0668b603e398734bf2f6538ff42f"
+      },
+      {
+        "file": "tokenizer.json",
+        "bytes": 439125,
+        "sha256": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+      },
+      {
+        "file": "tokenizer_config.json",
+        "bytes": 367,
+        "sha256": "e6f3b96db926a37d4039995fbf5ad17de158dfb8f6343d607e4dbaad18d75f5a"
+      },
+      {
+        "file": "special_tokens_map.json",
+        "bytes": 125,
+        "sha256": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3"
+      },
+      {
+        "file": "onnx/model.onnx",
+        "bytes": 94851877,
+        "sha256": "69a0b846f4f116b5e6aabf9546ea6754d02264f3211a13a1bd69b31b8040749a"
+      },
+      {
+        "file": "onnx/model_quantized.onnx",
+        "bytes": 24010842,
+        "sha256": "15b717c382bcb518ba457b93ea6850ede7f4f1cd8937454aa06972366cd19bcc"
+      },
+      {
+        "file": "onnx/model_fp16.onnx",
+        "bytes": 47497427,
+        "sha256": "60d0fe5eb8d4e251d4b24dff010a2625c10a013503f0d09f625e8a9b0311315f"
+      }
+    ],
+    "weightsCompression": {
+      "fp16": 1.9969897948366762,
+      "q8": 3.9503769588754944
+    }
+  },
+  "notes": "本机静态权重；加载时间含缓存读取及 session 创建，不含 model:fetch 网络下载。WASM 单线程。首次推理单列；后续查询按提交至浏览器绘制回调计时。",
+  "configurations": [
+    {
+      "label": "FP32 · WASM · 逐条",
+      "backend": "wasm",
+      "dtype": "fp32",
+      "batch": 1,
+      "refreshEveryBatch": true,
+      "status": "complete",
+      "imports": [
+        {
+          "trial": 0,
+          "embeddingMs": 1562.4000024795532,
+          "writeMs": 558.5077000000165,
+          "refreshMs": 6216.203799999959,
+          "totalMs": 8490.300000190735,
+          "chunksPerSecond": 11.52073730890535
+        },
+        {
+          "trial": 1,
+          "embeddingMs": 1520.3000001907349,
+          "writeMs": 399.7815000000992,
+          "refreshMs": 6331.753700000059,
+          "totalMs": 8400.89999961853,
+          "chunksPerSecond": 11.83976846526458
+        },
+        {
+          "trial": 2,
+          "embeddingMs": 1494.2000007629395,
+          "writeMs": 355.99219999997877,
+          "refreshMs": 6233.290799999959,
+          "totalMs": 8223.5,
+          "chunksPerSecond": 12.04658010360674
+        }
+      ],
+      "queries": [
+        {
+          "trial": 0,
+          "query": "不用相同词语也能搜到相近意思是什么原理？",
+          "firstQueryInTrial": true,
+          "queryEmbeddingMs": 55.09999942779541,
+          "searchMs": 25.397400000016205,
+          "endToEndMs": 86.60000038146973,
+          "rankedTitles": [
+            "向量检索.txt",
+            "增量导入.txt",
+            "检索评测.txt",
+            "批处理.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "如何结合关键词和语义搜索进行统一排序？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 52.89999961853027,
+          "searchMs": 15.869999999995343,
+          "endToEndMs": 74.60000038146973,
+          "rankedTitles": [
+            "混合检索.txt",
+            "向量检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "电脑没有可用的图形加速时如何运行模型？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 48.60000038146973,
+          "searchMs": 12.036699999996927,
+          "endToEndMs": 66.5,
+          "rankedTitles": [
+            "WebGPU.txt",
+            "WASM.txt",
+            "模型版本.txt",
+            "增量导入.txt",
+            "浏览器推理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "如何让刚刚写入的资料马上可以被查询到？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 49.19999980926514,
+          "searchMs": 14.433700000023236,
+          "endToEndMs": 68.69999980926514,
+          "rankedTitles": [
+            "索引刷新.txt",
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "检索评测.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "怎样避免重复上传同一个文件造成重复数据？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 48.10000038146973,
+          "searchMs": 11.40460000000894,
+          "endToEndMs": 999.1000003814697,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "增量导入.txt",
+            "模型版本.txt",
+            "索引刷新.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 0.6309297535714575
+        },
+        {
+          "trial": 0,
+          "query": "用什么指标比较量化前后的检索准确率？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 57.19999980926514,
+          "searchMs": 16.94200000001001,
+          "endToEndMs": 1001.7999992370605,
+          "rankedTitles": [
+            "检索评测.txt",
+            "模型量化.txt",
+            "性能计时.txt",
+            "中文嵌入.txt",
+            "批处理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "如何减少多条文本逐个推理造成的开销？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 45.10000038146973,
+          "searchMs": 11.830699999991339,
+          "endToEndMs": 1001.5999994277954,
+          "rankedTitles": [
+            "批处理.txt",
+            "索引刷新.txt",
+            "浏览器推理.txt",
+            "知识库隔离.txt",
+            "中文嵌入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "切换到另一个集合后怎样防止旧的搜索结果出现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 51.69999980926514,
+          "searchMs": 15.126400000008289,
+          "endToEndMs": 1001.7000007629395,
+          "rankedTitles": [
+            "知识库隔离.txt",
+            "混合检索.txt",
+            "全文索引.txt",
+            "文档分块.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "中文文档的关键词匹配应该配置什么分词器？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 49,
+          "searchMs": 11.853899999987334,
+          "endToEndMs": 1001.8000001907349,
+          "rankedTitles": [
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "向量检索.txt",
+            "文档分块.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "本地计算是否意味着原文不会发送给数据库？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 49.39999961853027,
+          "searchMs": 13.471400000038557,
+          "endToEndMs": 1002,
+          "rankedTitles": [
+            "本地隐私.txt",
+            "事务与并发.txt",
+            "浏览器推理.txt",
+            "文档分块.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "为什么并发混合查询要保护数据库会话变量？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 47.19999980926514,
+          "searchMs": 12.039500000013504,
+          "endToEndMs": 1001.3999996185303,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "混合检索.txt",
+            "本地隐私.txt",
+            "中文嵌入.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "怎样锁定模型版本保证实验可以复现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 42.79999923706055,
+          "searchMs": 11.171099999977741,
+          "endToEndMs": 1001.6000003814697,
+          "rankedTitles": [
+            "模型版本.txt",
+            "知识库隔离.txt",
+            "性能计时.txt",
+            "WASM.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "不用相同词语也能搜到相近意思是什么原理？",
+          "firstQueryInTrial": true,
+          "queryEmbeddingMs": 48.89999961853027,
+          "searchMs": 19.29350000002887,
+          "endToEndMs": 73,
+          "rankedTitles": [
+            "向量检索.txt",
+            "增量导入.txt",
+            "检索评测.txt",
+            "批处理.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "如何结合关键词和语义搜索进行统一排序？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 46.29999923706055,
+          "searchMs": 11.45329999999376,
+          "endToEndMs": 997.5,
+          "rankedTitles": [
+            "混合检索.txt",
+            "向量检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "电脑没有可用的图形加速时如何运行模型？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 48,
+          "searchMs": 11.114300000015646,
+          "endToEndMs": 1001,
+          "rankedTitles": [
+            "WebGPU.txt",
+            "WASM.txt",
+            "模型版本.txt",
+            "增量导入.txt",
+            "浏览器推理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "如何让刚刚写入的资料马上可以被查询到？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 47.89999961853027,
+          "searchMs": 11.507400000002235,
+          "endToEndMs": 1001.6999998092651,
+          "rankedTitles": [
+            "索引刷新.txt",
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "检索评测.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "怎样避免重复上传同一个文件造成重复数据？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 46.60000038146973,
+          "searchMs": 11.846900000004098,
+          "endToEndMs": 1001.5,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "增量导入.txt",
+            "模型版本.txt",
+            "索引刷新.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 0.6309297535714575
+        },
+        {
+          "trial": 1,
+          "query": "用什么指标比较量化前后的检索准确率？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 44.19999980926514,
+          "searchMs": 11.008100000035483,
+          "endToEndMs": 1002.7000007629395,
+          "rankedTitles": [
+            "检索评测.txt",
+            "模型量化.txt",
+            "性能计时.txt",
+            "中文嵌入.txt",
+            "批处理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "如何减少多条文本逐个推理造成的开销？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 43.89999961853027,
+          "searchMs": 10.68839999998454,
+          "endToEndMs": 1001.8999996185303,
+          "rankedTitles": [
+            "批处理.txt",
+            "索引刷新.txt",
+            "浏览器推理.txt",
+            "知识库隔离.txt",
+            "中文嵌入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "切换到另一个集合后怎样防止旧的搜索结果出现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 51,
+          "searchMs": 12.214700000011362,
+          "endToEndMs": 1001.6999998092651,
+          "rankedTitles": [
+            "知识库隔离.txt",
+            "混合检索.txt",
+            "全文索引.txt",
+            "文档分块.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "中文文档的关键词匹配应该配置什么分词器？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 46,
+          "searchMs": 12.299100000003818,
+          "endToEndMs": 1001.8000001907349,
+          "rankedTitles": [
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "向量检索.txt",
+            "文档分块.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "本地计算是否意味着原文不会发送给数据库？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 50.69999980926514,
+          "searchMs": 14.543999999994412,
+          "endToEndMs": 1001.3000001907349,
+          "rankedTitles": [
+            "本地隐私.txt",
+            "事务与并发.txt",
+            "浏览器推理.txt",
+            "文档分块.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "为什么并发混合查询要保护数据库会话变量？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 46.69999980926514,
+          "searchMs": 12.370899999979883,
+          "endToEndMs": 1003.3000001907349,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "混合检索.txt",
+            "本地隐私.txt",
+            "中文嵌入.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "怎样锁定模型版本保证实验可以复现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 44.5,
+          "searchMs": 10.951000000000931,
+          "endToEndMs": 1000.1000003814697,
+          "rankedTitles": [
+            "模型版本.txt",
+            "知识库隔离.txt",
+            "性能计时.txt",
+            "WASM.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "不用相同词语也能搜到相近意思是什么原理？",
+          "firstQueryInTrial": true,
+          "queryEmbeddingMs": 45.19999980926514,
+          "searchMs": 19.59189999999944,
+          "endToEndMs": 69.19999980926514,
+          "rankedTitles": [
+            "向量检索.txt",
+            "增量导入.txt",
+            "检索评测.txt",
+            "批处理.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "如何结合关键词和语义搜索进行统一排序？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 47.5,
+          "searchMs": 11.113299999968149,
+          "endToEndMs": 997,
+          "rankedTitles": [
+            "混合检索.txt",
+            "向量检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "电脑没有可用的图形加速时如何运行模型？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 50.79999923706055,
+          "searchMs": 11.289400000008754,
+          "endToEndMs": 1001.6000003814697,
+          "rankedTitles": [
+            "WebGPU.txt",
+            "WASM.txt",
+            "模型版本.txt",
+            "增量导入.txt",
+            "浏览器推理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "如何让刚刚写入的资料马上可以被查询到？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 51.90000057220459,
+          "searchMs": 16.89130000001751,
+          "endToEndMs": 1002.3000001907349,
+          "rankedTitles": [
+            "索引刷新.txt",
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "检索评测.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "怎样避免重复上传同一个文件造成重复数据？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 50.69999980926514,
+          "searchMs": 12.852699999988545,
+          "endToEndMs": 1001.1999998092651,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "增量导入.txt",
+            "模型版本.txt",
+            "索引刷新.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 0.6309297535714575
+        },
+        {
+          "trial": 2,
+          "query": "用什么指标比较量化前后的检索准确率？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 46.69999980926514,
+          "searchMs": 11.166499999992084,
+          "endToEndMs": 1002,
+          "rankedTitles": [
+            "检索评测.txt",
+            "模型量化.txt",
+            "性能计时.txt",
+            "中文嵌入.txt",
+            "批处理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "如何减少多条文本逐个推理造成的开销？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 47.89999961853027,
+          "searchMs": 13.649600000004284,
+          "endToEndMs": 1002.1000003814697,
+          "rankedTitles": [
+            "批处理.txt",
+            "索引刷新.txt",
+            "浏览器推理.txt",
+            "知识库隔离.txt",
+            "中文嵌入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "切换到另一个集合后怎样防止旧的搜索结果出现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 50.5,
+          "searchMs": 11.9997999999905,
+          "endToEndMs": 1001.2000007629395,
+          "rankedTitles": [
+            "知识库隔离.txt",
+            "混合检索.txt",
+            "全文索引.txt",
+            "文档分块.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "中文文档的关键词匹配应该配置什么分词器？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 46.70000076293945,
+          "searchMs": 11.832099999999627,
+          "endToEndMs": 1002.3999996185303,
+          "rankedTitles": [
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "向量检索.txt",
+            "文档分块.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "本地计算是否意味着原文不会发送给数据库？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 49.80000019073486,
+          "searchMs": 11.880300000018906,
+          "endToEndMs": 1002.0999994277954,
+          "rankedTitles": [
+            "本地隐私.txt",
+            "事务与并发.txt",
+            "浏览器推理.txt",
+            "文档分块.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "为什么并发混合查询要保护数据库会话变量？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 49,
+          "searchMs": 11.18739999999525,
+          "endToEndMs": 1002,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "混合检索.txt",
+            "本地隐私.txt",
+            "中文嵌入.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "怎样锁定模型版本保证实验可以复现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 44.40000057220459,
+          "searchMs": 10.477499999979045,
+          "endToEndMs": 1000.3000001907349,
+          "rankedTitles": [
+            "模型版本.txt",
+            "知识库隔离.txt",
+            "性能计时.txt",
+            "WASM.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        }
+      ],
+      "load": {
+        "backend": "wasm",
+        "dtype": "fp32",
+        "reason": "已手动选择 WASM",
+        "loadMs": 1345.3000001907349,
+        "reused": false
+      },
+      "firstInferenceMs": 29.600000381469727,
+      "summary": {
+        "chunksPerSecond": 11.83976846526458,
+        "embeddingMs": 1520.3000001907349,
+        "writeMs": 399.7815000000992,
+        "refreshMs": 6233.290799999959,
+        "searchMs": 11.853899999987334,
+        "endToEndMs": 1001.6000003814697,
+        "recallAt5": 1,
+        "ndcgAt5": 0.9692441461309548
+      }
+    },
+    {
+      "label": "FP32 · WASM · 批量",
+      "backend": "wasm",
+      "dtype": "fp32",
+      "batch": 8,
+      "refreshEveryBatch": false,
+      "status": "complete",
+      "imports": [
+        {
+          "trial": 0,
+          "embeddingMs": 1736.6999998092651,
+          "writeMs": 204.47810000000754,
+          "refreshMs": 435.87369999999646,
+          "totalMs": 2401.2000007629395,
+          "chunksPerSecond": 10.364484368041037
+        },
+        {
+          "trial": 1,
+          "embeddingMs": 1661.4999990463257,
+          "writeMs": 244.18269999994664,
+          "refreshMs": 227.430400000012,
+          "totalMs": 2159.300000190735,
+          "chunksPerSecond": 10.833584116961607
+        },
+        {
+          "trial": 2,
+          "embeddingMs": 1600.599998474121,
+          "writeMs": 211.44060000003083,
+          "refreshMs": 327.08340000000317,
+          "totalMs": 2161.699999809265,
+          "chunksPerSecond": 11.245782842159006
+        }
+      ],
+      "queries": [
+        {
+          "trial": 0,
+          "query": "不用相同词语也能搜到相近意思是什么原理？",
+          "firstQueryInTrial": true,
+          "queryEmbeddingMs": 52.19999980926514,
+          "searchMs": 19.777699999976903,
+          "endToEndMs": 78.29999923706055,
+          "rankedTitles": [
+            "向量检索.txt",
+            "增量导入.txt",
+            "检索评测.txt",
+            "批处理.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "如何结合关键词和语义搜索进行统一排序？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 50.40000057220459,
+          "searchMs": 12.837400000018533,
+          "endToEndMs": 994.3999996185303,
+          "rankedTitles": [
+            "混合检索.txt",
+            "向量检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "电脑没有可用的图形加速时如何运行模型？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 56.19999980926514,
+          "searchMs": 14.02780000003986,
+          "endToEndMs": 1001.8999996185303,
+          "rankedTitles": [
+            "WebGPU.txt",
+            "WASM.txt",
+            "模型版本.txt",
+            "增量导入.txt",
+            "浏览器推理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "如何让刚刚写入的资料马上可以被查询到？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 57.89999961853027,
+          "searchMs": 14.231999999959953,
+          "endToEndMs": 1001.4000005722046,
+          "rankedTitles": [
+            "索引刷新.txt",
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "检索评测.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "怎样避免重复上传同一个文件造成重复数据？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 53.40000057220459,
+          "searchMs": 17.53129999997327,
+          "endToEndMs": 1002,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "增量导入.txt",
+            "模型版本.txt",
+            "索引刷新.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 0.6309297535714575
+        },
+        {
+          "trial": 0,
+          "query": "用什么指标比较量化前后的检索准确率？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 46,
+          "searchMs": 13.737699999997858,
+          "endToEndMs": 1001.6000003814697,
+          "rankedTitles": [
+            "检索评测.txt",
+            "模型量化.txt",
+            "性能计时.txt",
+            "中文嵌入.txt",
+            "批处理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "如何减少多条文本逐个推理造成的开销？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 51.69999980926514,
+          "searchMs": 14.730699999956414,
+          "endToEndMs": 1002.7999992370605,
+          "rankedTitles": [
+            "批处理.txt",
+            "索引刷新.txt",
+            "浏览器推理.txt",
+            "知识库隔离.txt",
+            "中文嵌入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "切换到另一个集合后怎样防止旧的搜索结果出现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 54.60000038146973,
+          "searchMs": 12.607699999993201,
+          "endToEndMs": 1000.6000003814697,
+          "rankedTitles": [
+            "知识库隔离.txt",
+            "混合检索.txt",
+            "全文索引.txt",
+            "文档分块.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "中文文档的关键词匹配应该配置什么分词器？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 49.69999980926514,
+          "searchMs": 11.973799999977928,
+          "endToEndMs": 1001.8000001907349,
+          "rankedTitles": [
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "向量检索.txt",
+            "文档分块.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "本地计算是否意味着原文不会发送给数据库？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 48.69999980926514,
+          "searchMs": 11.87619999999879,
+          "endToEndMs": 1001.2999992370605,
+          "rankedTitles": [
+            "本地隐私.txt",
+            "事务与并发.txt",
+            "浏览器推理.txt",
+            "文档分块.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "为什么并发混合查询要保护数据库会话变量？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 49,
+          "searchMs": 11.42229999997653,
+          "endToEndMs": 1001.8999996185303,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "混合检索.txt",
+            "本地隐私.txt",
+            "中文嵌入.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "怎样锁定模型版本保证实验可以复现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 45.40000057220459,
+          "searchMs": 11.798899999994319,
+          "endToEndMs": 1003.6999998092651,
+          "rankedTitles": [
+            "模型版本.txt",
+            "知识库隔离.txt",
+            "性能计时.txt",
+            "WASM.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "不用相同词语也能搜到相近意思是什么原理？",
+          "firstQueryInTrial": true,
+          "queryEmbeddingMs": 45.69999980926514,
+          "searchMs": 39.553300000028685,
+          "endToEndMs": 659.3000001907349,
+          "rankedTitles": [
+            "向量检索.txt",
+            "增量导入.txt",
+            "检索评测.txt",
+            "批处理.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "如何结合关键词和语义搜索进行统一排序？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 51.40000057220459,
+          "searchMs": 11.84509999997681,
+          "endToEndMs": 1001.3000001907349,
+          "rankedTitles": [
+            "混合检索.txt",
+            "向量检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "电脑没有可用的图形加速时如何运行模型？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 50.69999980926514,
+          "searchMs": 12.620200000004843,
+          "endToEndMs": 1001.6000003814697,
+          "rankedTitles": [
+            "WebGPU.txt",
+            "WASM.txt",
+            "模型版本.txt",
+            "增量导入.txt",
+            "浏览器推理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "如何让刚刚写入的资料马上可以被查询到？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 47.90000057220459,
+          "searchMs": 11.03139999997802,
+          "endToEndMs": 1002.8000001907349,
+          "rankedTitles": [
+            "索引刷新.txt",
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "检索评测.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "怎样避免重复上传同一个文件造成重复数据？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 49.09999942779541,
+          "searchMs": 12.798600000038277,
+          "endToEndMs": 1001.1999998092651,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "增量导入.txt",
+            "模型版本.txt",
+            "索引刷新.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 0.6309297535714575
+        },
+        {
+          "trial": 1,
+          "query": "用什么指标比较量化前后的检索准确率？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 46.29999923706055,
+          "searchMs": 11.556999999971595,
+          "endToEndMs": 1002.3999996185303,
+          "rankedTitles": [
+            "检索评测.txt",
+            "模型量化.txt",
+            "性能计时.txt",
+            "中文嵌入.txt",
+            "批处理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "如何减少多条文本逐个推理造成的开销？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 46.39999961853027,
+          "searchMs": 12.162699999986216,
+          "endToEndMs": 1000.6999998092651,
+          "rankedTitles": [
+            "批处理.txt",
+            "索引刷新.txt",
+            "浏览器推理.txt",
+            "知识库隔离.txt",
+            "中文嵌入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "切换到另一个集合后怎样防止旧的搜索结果出现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 51.79999923706055,
+          "searchMs": 13.257099999987986,
+          "endToEndMs": 1002.0999994277954,
+          "rankedTitles": [
+            "知识库隔离.txt",
+            "混合检索.txt",
+            "全文索引.txt",
+            "文档分块.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "中文文档的关键词匹配应该配置什么分词器？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 48.30000019073486,
+          "searchMs": 12.8416000000434,
+          "endToEndMs": 1001.5,
+          "rankedTitles": [
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "向量检索.txt",
+            "文档分块.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "本地计算是否意味着原文不会发送给数据库？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 48.5,
+          "searchMs": 11.517700000025798,
+          "endToEndMs": 1001.6000003814697,
+          "rankedTitles": [
+            "本地隐私.txt",
+            "事务与并发.txt",
+            "浏览器推理.txt",
+            "文档分块.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "为什么并发混合查询要保护数据库会话变量？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 47.89999961853027,
+          "searchMs": 11.276899999997113,
+          "endToEndMs": 1002.8000001907349,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "混合检索.txt",
+            "本地隐私.txt",
+            "中文嵌入.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "怎样锁定模型版本保证实验可以复现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 45.19999980926514,
+          "searchMs": 11.515399999974761,
+          "endToEndMs": 1000.1999998092651,
+          "rankedTitles": [
+            "模型版本.txt",
+            "知识库隔离.txt",
+            "性能计时.txt",
+            "WASM.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "不用相同词语也能搜到相近意思是什么原理？",
+          "firstQueryInTrial": true,
+          "queryEmbeddingMs": 47.5,
+          "searchMs": 19.379500000039116,
+          "endToEndMs": 449.69999980926514,
+          "rankedTitles": [
+            "向量检索.txt",
+            "增量导入.txt",
+            "检索评测.txt",
+            "批处理.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "如何结合关键词和语义搜索进行统一排序？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 47.60000038146973,
+          "searchMs": 10.847799999988638,
+          "endToEndMs": 1000.8000001907349,
+          "rankedTitles": [
+            "混合检索.txt",
+            "向量检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "电脑没有可用的图形加速时如何运行模型？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 47,
+          "searchMs": 10.802700000000186,
+          "endToEndMs": 1002.8000001907349,
+          "rankedTitles": [
+            "WebGPU.txt",
+            "WASM.txt",
+            "模型版本.txt",
+            "增量导入.txt",
+            "浏览器推理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "如何让刚刚写入的资料马上可以被查询到？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 46.89999961853027,
+          "searchMs": 11.874700000043958,
+          "endToEndMs": 1000.3000001907349,
+          "rankedTitles": [
+            "索引刷新.txt",
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "检索评测.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "怎样避免重复上传同一个文件造成重复数据？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 48.69999980926514,
+          "searchMs": 11.120299999951385,
+          "endToEndMs": 1003.9000005722046,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "增量导入.txt",
+            "模型版本.txt",
+            "索引刷新.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 0.6309297535714575
+        },
+        {
+          "trial": 2,
+          "query": "用什么指标比较量化前后的检索准确率？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 45.30000019073486,
+          "searchMs": 11.261699999973644,
+          "endToEndMs": 1000.3000001907349,
+          "rankedTitles": [
+            "检索评测.txt",
+            "模型量化.txt",
+            "性能计时.txt",
+            "中文嵌入.txt",
+            "批处理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "如何减少多条文本逐个推理造成的开销？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 46.89999961853027,
+          "searchMs": 11.73110000003362,
+          "endToEndMs": 1001,
+          "rankedTitles": [
+            "批处理.txt",
+            "索引刷新.txt",
+            "浏览器推理.txt",
+            "知识库隔离.txt",
+            "中文嵌入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "切换到另一个集合后怎样防止旧的搜索结果出现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 47.80000019073486,
+          "searchMs": 11.445000000006985,
+          "endToEndMs": 1002.1000003814697,
+          "rankedTitles": [
+            "知识库隔离.txt",
+            "混合检索.txt",
+            "全文索引.txt",
+            "文档分块.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "中文文档的关键词匹配应该配置什么分词器？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 47.39999961853027,
+          "searchMs": 11.651199999963865,
+          "endToEndMs": 1001.3000001907349,
+          "rankedTitles": [
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "向量检索.txt",
+            "文档分块.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "本地计算是否意味着原文不会发送给数据库？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 48.70000076293945,
+          "searchMs": 11.584399999992456,
+          "endToEndMs": 1002,
+          "rankedTitles": [
+            "本地隐私.txt",
+            "事务与并发.txt",
+            "浏览器推理.txt",
+            "文档分块.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "为什么并发混合查询要保护数据库会话变量？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 47.79999923706055,
+          "searchMs": 12.068900000012945,
+          "endToEndMs": 1001.6000003814697,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "混合检索.txt",
+            "本地隐私.txt",
+            "中文嵌入.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "怎样锁定模型版本保证实验可以复现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 43.30000019073486,
+          "searchMs": 11.347899999993388,
+          "endToEndMs": 1002.1999998092651,
+          "rankedTitles": [
+            "模型版本.txt",
+            "知识库隔离.txt",
+            "性能计时.txt",
+            "WASM.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        }
+      ],
+      "load": {
+        "backend": "wasm",
+        "dtype": "fp32",
+        "reason": "已手动选择 WASM",
+        "loadMs": 528.5,
+        "reused": false
+      },
+      "firstInferenceMs": 32,
+      "summary": {
+        "chunksPerSecond": 10.833584116961607,
+        "embeddingMs": 1661.4999990463257,
+        "writeMs": 211.44060000003083,
+        "refreshMs": 327.08340000000317,
+        "searchMs": 11.84509999997681,
+        "endToEndMs": 1001.6000003814697,
+        "recallAt5": 1,
+        "ndcgAt5": 0.9692441461309548
+      }
+    },
+    {
+      "label": "INT8 · WASM · 批量",
+      "backend": "wasm",
+      "dtype": "q8",
+      "batch": 8,
+      "refreshEveryBatch": false,
+      "status": "complete",
+      "imports": [
+        {
+          "trial": 0,
+          "embeddingMs": 981.5999994277954,
+          "writeMs": 209.52160000003641,
+          "refreshMs": 332.01069999998435,
+          "totalMs": 1546.1000003814697,
+          "chunksPerSecond": 18.337408323647868
+        },
+        {
+          "trial": 1,
+          "embeddingMs": 958.1999998092651,
+          "writeMs": 201.19289999990724,
+          "refreshMs": 317.0807999999961,
+          "totalMs": 1498,
+          "chunksPerSecond": 18.785222295536418
+        },
+        {
+          "trial": 2,
+          "embeddingMs": 979.6999988555908,
+          "writeMs": 196.5915999999852,
+          "refreshMs": 338.85430000000633,
+          "totalMs": 1536.8000001907349,
+          "chunksPerSecond": 18.372971339212206
+        }
+      ],
+      "queries": [
+        {
+          "trial": 0,
+          "query": "不用相同词语也能搜到相近意思是什么原理？",
+          "firstQueryInTrial": true,
+          "queryEmbeddingMs": 34.5,
+          "searchMs": 19.43809999997029,
+          "endToEndMs": 821.5,
+          "rankedTitles": [
+            "向量检索.txt",
+            "检索评测.txt",
+            "增量导入.txt",
+            "批处理.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "如何结合关键词和语义搜索进行统一排序？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 31.5,
+          "searchMs": 11.902500000025611,
+          "endToEndMs": 1001.3999996185303,
+          "rankedTitles": [
+            "混合检索.txt",
+            "向量检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "电脑没有可用的图形加速时如何运行模型？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 30.799999237060547,
+          "searchMs": 11.467000000004191,
+          "endToEndMs": 1002.3000001907349,
+          "rankedTitles": [
+            "WebGPU.txt",
+            "WASM.txt",
+            "模型版本.txt",
+            "浏览器推理.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "如何让刚刚写入的资料马上可以被查询到？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 29,
+          "searchMs": 11.507700000016484,
+          "endToEndMs": 1000.6999998092651,
+          "rankedTitles": [
+            "索引刷新.txt",
+            "检索评测.txt",
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "怎样避免重复上传同一个文件造成重复数据？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 30.300000190734863,
+          "searchMs": 11.441099999996368,
+          "endToEndMs": 1002.6000003814697,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "增量导入.txt",
+            "模型版本.txt",
+            "全文索引.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 0.6309297535714575
+        },
+        {
+          "trial": 0,
+          "query": "用什么指标比较量化前后的检索准确率？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 30.59999942779541,
+          "searchMs": 11.265199999965262,
+          "endToEndMs": 1001.3000001907349,
+          "rankedTitles": [
+            "检索评测.txt",
+            "模型量化.txt",
+            "中文嵌入.txt",
+            "性能计时.txt",
+            "向量检索.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "如何减少多条文本逐个推理造成的开销？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 29.800000190734863,
+          "searchMs": 12.146000000007916,
+          "endToEndMs": 1001.6000003814697,
+          "rankedTitles": [
+            "批处理.txt",
+            "索引刷新.txt",
+            "浏览器推理.txt",
+            "知识库隔离.txt",
+            "向量检索.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "切换到另一个集合后怎样防止旧的搜索结果出现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 31,
+          "searchMs": 11.632099999987986,
+          "endToEndMs": 1001.6000003814697,
+          "rankedTitles": [
+            "知识库隔离.txt",
+            "混合检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "中文文档的关键词匹配应该配置什么分词器？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 31.600000381469727,
+          "searchMs": 12.633499999996275,
+          "endToEndMs": 1001.8999996185303,
+          "rankedTitles": [
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "向量检索.txt",
+            "文档分块.txt",
+            "检索评测.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "本地计算是否意味着原文不会发送给数据库？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 32.5,
+          "searchMs": 11.659800000023097,
+          "endToEndMs": 1001.6999998092651,
+          "rankedTitles": [
+            "本地隐私.txt",
+            "浏览器推理.txt",
+            "事务与并发.txt",
+            "文档分块.txt",
+            "模型量化.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "为什么并发混合查询要保护数据库会话变量？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 33.69999980926514,
+          "searchMs": 12.769200000038836,
+          "endToEndMs": 1001.3999996185303,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "混合检索.txt",
+            "本地隐私.txt",
+            "中文嵌入.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "怎样锁定模型版本保证实验可以复现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 28.09999942779541,
+          "searchMs": 11.163200000009965,
+          "endToEndMs": 1002.3000001907349,
+          "rankedTitles": [
+            "模型版本.txt",
+            "知识库隔离.txt",
+            "性能计时.txt",
+            "WASM.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "不用相同词语也能搜到相近意思是什么原理？",
+          "firstQueryInTrial": true,
+          "queryEmbeddingMs": 29.399999618530273,
+          "searchMs": 24.879699999990407,
+          "endToEndMs": 303.5,
+          "rankedTitles": [
+            "向量检索.txt",
+            "检索评测.txt",
+            "增量导入.txt",
+            "批处理.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "如何结合关键词和语义搜索进行统一排序？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 35.5,
+          "searchMs": 16.57839999999851,
+          "endToEndMs": 1001.8000001907349,
+          "rankedTitles": [
+            "混合检索.txt",
+            "向量检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "电脑没有可用的图形加速时如何运行模型？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 35.10000038146973,
+          "searchMs": 13.501500000013039,
+          "endToEndMs": 1002,
+          "rankedTitles": [
+            "WebGPU.txt",
+            "WASM.txt",
+            "模型版本.txt",
+            "浏览器推理.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "如何让刚刚写入的资料马上可以被查询到？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 29.700000762939453,
+          "searchMs": 10.93380000005709,
+          "endToEndMs": 1001.3999996185303,
+          "rankedTitles": [
+            "索引刷新.txt",
+            "检索评测.txt",
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "怎样避免重复上传同一个文件造成重复数据？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 29.300000190734863,
+          "searchMs": 12.041399999987334,
+          "endToEndMs": 1001.7000007629395,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "增量导入.txt",
+            "模型版本.txt",
+            "全文索引.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 0.6309297535714575
+        },
+        {
+          "trial": 1,
+          "query": "用什么指标比较量化前后的检索准确率？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 29.59999942779541,
+          "searchMs": 12.664699999964796,
+          "endToEndMs": 1001.9000005722046,
+          "rankedTitles": [
+            "检索评测.txt",
+            "模型量化.txt",
+            "中文嵌入.txt",
+            "性能计时.txt",
+            "向量检索.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "如何减少多条文本逐个推理造成的开销？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 34.19999980926514,
+          "searchMs": 12.484199999948032,
+          "endToEndMs": 1001.6999998092651,
+          "rankedTitles": [
+            "批处理.txt",
+            "索引刷新.txt",
+            "浏览器推理.txt",
+            "知识库隔离.txt",
+            "向量检索.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "切换到另一个集合后怎样防止旧的搜索结果出现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 31.699999809265137,
+          "searchMs": 11.836899999994785,
+          "endToEndMs": 1001.5999994277954,
+          "rankedTitles": [
+            "知识库隔离.txt",
+            "混合检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "中文文档的关键词匹配应该配置什么分词器？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 31,
+          "searchMs": 12.522700000030454,
+          "endToEndMs": 1001.8000001907349,
+          "rankedTitles": [
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "向量检索.txt",
+            "文档分块.txt",
+            "检索评测.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "本地计算是否意味着原文不会发送给数据库？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 31.200000762939453,
+          "searchMs": 15.804300000017975,
+          "endToEndMs": 1001.6999998092651,
+          "rankedTitles": [
+            "本地隐私.txt",
+            "浏览器推理.txt",
+            "事务与并发.txt",
+            "文档分块.txt",
+            "模型量化.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "为什么并发混合查询要保护数据库会话变量？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 42.90000057220459,
+          "searchMs": 15.740099999995437,
+          "endToEndMs": 1001.7999992370605,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "混合检索.txt",
+            "本地隐私.txt",
+            "中文嵌入.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "怎样锁定模型版本保证实验可以复现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 27.5,
+          "searchMs": 11.773500000010245,
+          "endToEndMs": 1001.8999996185303,
+          "rankedTitles": [
+            "模型版本.txt",
+            "知识库隔离.txt",
+            "性能计时.txt",
+            "WASM.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "不用相同词语也能搜到相近意思是什么原理？",
+          "firstQueryInTrial": true,
+          "queryEmbeddingMs": 28.600000381469727,
+          "searchMs": 21.60759999998845,
+          "endToEndMs": 264,
+          "rankedTitles": [
+            "向量检索.txt",
+            "检索评测.txt",
+            "增量导入.txt",
+            "批处理.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "如何结合关键词和语义搜索进行统一排序？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 30.09999942779541,
+          "searchMs": 11.992800000007264,
+          "endToEndMs": 1001.6999998092651,
+          "rankedTitles": [
+            "混合检索.txt",
+            "向量检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "电脑没有可用的图形加速时如何运行模型？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 29.5,
+          "searchMs": 12.07750000001397,
+          "endToEndMs": 1001,
+          "rankedTitles": [
+            "WebGPU.txt",
+            "WASM.txt",
+            "模型版本.txt",
+            "浏览器推理.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "如何让刚刚写入的资料马上可以被查询到？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 29.800000190734863,
+          "searchMs": 11.661800000001676,
+          "endToEndMs": 1001.3000001907349,
+          "rankedTitles": [
+            "索引刷新.txt",
+            "检索评测.txt",
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "怎样避免重复上传同一个文件造成重复数据？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 29.399999618530273,
+          "searchMs": 11.537200000020675,
+          "endToEndMs": 1002.8000001907349,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "增量导入.txt",
+            "模型版本.txt",
+            "全文索引.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 0.6309297535714575
+        },
+        {
+          "trial": 2,
+          "query": "用什么指标比较量化前后的检索准确率？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 29.800000190734863,
+          "searchMs": 11.539099999994505,
+          "endToEndMs": 1001.7000007629395,
+          "rankedTitles": [
+            "检索评测.txt",
+            "模型量化.txt",
+            "中文嵌入.txt",
+            "性能计时.txt",
+            "向量检索.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "如何减少多条文本逐个推理造成的开销？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 30.700000762939453,
+          "searchMs": 11.316700000024866,
+          "endToEndMs": 1000.6000003814697,
+          "rankedTitles": [
+            "批处理.txt",
+            "索引刷新.txt",
+            "浏览器推理.txt",
+            "知识库隔离.txt",
+            "向量检索.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "切换到另一个集合后怎样防止旧的搜索结果出现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 31.300000190734863,
+          "searchMs": 11.543599999975413,
+          "endToEndMs": 1002.5,
+          "rankedTitles": [
+            "知识库隔离.txt",
+            "混合检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "中文文档的关键词匹配应该配置什么分词器？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 31.800000190734863,
+          "searchMs": 11.586700000043493,
+          "endToEndMs": 1002.6000003814697,
+          "rankedTitles": [
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "向量检索.txt",
+            "文档分块.txt",
+            "检索评测.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "本地计算是否意味着原文不会发送给数据库？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 29.600000381469727,
+          "searchMs": 11.506699999968987,
+          "endToEndMs": 1000.0999994277954,
+          "rankedTitles": [
+            "本地隐私.txt",
+            "浏览器推理.txt",
+            "事务与并发.txt",
+            "文档分块.txt",
+            "模型量化.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "为什么并发混合查询要保护数据库会话变量？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 31.700000762939453,
+          "searchMs": 12,
+          "endToEndMs": 1001.5999994277954,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "混合检索.txt",
+            "本地隐私.txt",
+            "中文嵌入.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "怎样锁定模型版本保证实验可以复现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 27.899999618530273,
+          "searchMs": 12.10940000001574,
+          "endToEndMs": 1001.6999998092651,
+          "rankedTitles": [
+            "模型版本.txt",
+            "知识库隔离.txt",
+            "性能计时.txt",
+            "WASM.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        }
+      ],
+      "load": {
+        "backend": "wasm",
+        "dtype": "q8",
+        "reason": "已手动选择 WASM",
+        "loadMs": 303.69999980926514,
+        "reused": false
+      },
+      "firstInferenceMs": 23.899999618530273,
+      "summary": {
+        "chunksPerSecond": 18.372971339212206,
+        "embeddingMs": 979.6999988555908,
+        "writeMs": 201.19289999990724,
+        "refreshMs": 332.01069999998435,
+        "searchMs": 11.836899999994785,
+        "endToEndMs": 1001.6999998092651,
+        "recallAt5": 1,
+        "ndcgAt5": 0.9692441461309548
+      }
+    },
+    {
+      "label": "FP16 · WebGPU · 批量",
+      "backend": "webgpu",
+      "dtype": "fp16",
+      "batch": 8,
+      "refreshEveryBatch": false,
+      "status": "complete",
+      "imports": [
+        {
+          "trial": 0,
+          "embeddingMs": 475.3999996185303,
+          "writeMs": 239.66769999999087,
+          "refreshMs": 458.7275999999838,
+          "totalMs": 1197.3000001907349,
+          "chunksPerSecond": 37.862852365257744
+        },
+        {
+          "trial": 1,
+          "embeddingMs": 147.5999994277954,
+          "writeMs": 206.9578999999212,
+          "refreshMs": 440.49280000000726,
+          "totalMs": 818,
+          "chunksPerSecond": 121.95121998496646
+        },
+        {
+          "trial": 2,
+          "embeddingMs": 142.99999809265137,
+          "writeMs": 202.69469999993453,
+          "refreshMs": 345.687099999981,
+          "totalMs": 713.5,
+          "chunksPerSecond": 125.87412755304786
+        }
+      ],
+      "queries": [
+        {
+          "trial": 0,
+          "query": "不用相同词语也能搜到相近意思是什么原理？",
+          "firstQueryInTrial": true,
+          "queryEmbeddingMs": 15.600000381469727,
+          "searchMs": 24.287399999971967,
+          "endToEndMs": 755.3999996185303,
+          "rankedTitles": [
+            "向量检索.txt",
+            "增量导入.txt",
+            "检索评测.txt",
+            "批处理.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "如何结合关键词和语义搜索进行统一排序？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 16.600000381469727,
+          "searchMs": 14.916499999992084,
+          "endToEndMs": 1002.1999998092651,
+          "rankedTitles": [
+            "混合检索.txt",
+            "向量检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "电脑没有可用的图形加速时如何运行模型？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 19.199999809265137,
+          "searchMs": 14.973400000017136,
+          "endToEndMs": 1001,
+          "rankedTitles": [
+            "WebGPU.txt",
+            "WASM.txt",
+            "模型版本.txt",
+            "增量导入.txt",
+            "浏览器推理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "如何让刚刚写入的资料马上可以被查询到？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 18.300000190734863,
+          "searchMs": 15.834499999997206,
+          "endToEndMs": 1002.3000001907349,
+          "rankedTitles": [
+            "索引刷新.txt",
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "检索评测.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "怎样避免重复上传同一个文件造成重复数据？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 16.600000381469727,
+          "searchMs": 14.667300000030082,
+          "endToEndMs": 1001.6999998092651,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "增量导入.txt",
+            "模型版本.txt",
+            "索引刷新.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 0.6309297535714575
+        },
+        {
+          "trial": 0,
+          "query": "用什么指标比较量化前后的检索准确率？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 16.09999942779541,
+          "searchMs": 14.498399999982212,
+          "endToEndMs": 1002,
+          "rankedTitles": [
+            "检索评测.txt",
+            "模型量化.txt",
+            "性能计时.txt",
+            "中文嵌入.txt",
+            "批处理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "如何减少多条文本逐个推理造成的开销？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 15.600000381469727,
+          "searchMs": 14.321100000001024,
+          "endToEndMs": 1001.1999998092651,
+          "rankedTitles": [
+            "批处理.txt",
+            "索引刷新.txt",
+            "浏览器推理.txt",
+            "知识库隔离.txt",
+            "中文嵌入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "切换到另一个集合后怎样防止旧的搜索结果出现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 15.90000057220459,
+          "searchMs": 20.197699999960605,
+          "endToEndMs": 1003.2999992370605,
+          "rankedTitles": [
+            "知识库隔离.txt",
+            "混合检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "文档分块.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "中文文档的关键词匹配应该配置什么分词器？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 16.600000381469727,
+          "searchMs": 15.077799999970011,
+          "endToEndMs": 1000.5,
+          "rankedTitles": [
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "向量检索.txt",
+            "文档分块.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "本地计算是否意味着原文不会发送给数据库？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 16.399999618530273,
+          "searchMs": 14.64059999998426,
+          "endToEndMs": 1001.3000001907349,
+          "rankedTitles": [
+            "本地隐私.txt",
+            "浏览器推理.txt",
+            "事务与并发.txt",
+            "文档分块.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "为什么并发混合查询要保护数据库会话变量？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 16.600000381469727,
+          "searchMs": 13.290600000007544,
+          "endToEndMs": 1002.8000001907349,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "混合检索.txt",
+            "本地隐私.txt",
+            "中文嵌入.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 0,
+          "query": "怎样锁定模型版本保证实验可以复现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 61.59999942779541,
+          "searchMs": 13.977400000032503,
+          "endToEndMs": 1001.3000001907349,
+          "rankedTitles": [
+            "模型版本.txt",
+            "知识库隔离.txt",
+            "性能计时.txt",
+            "WASM.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "不用相同词语也能搜到相近意思是什么原理？",
+          "firstQueryInTrial": true,
+          "queryEmbeddingMs": 13.199999809265137,
+          "searchMs": 29.210599999991246,
+          "endToEndMs": 987.7000007629395,
+          "rankedTitles": [
+            "向量检索.txt",
+            "增量导入.txt",
+            "检索评测.txt",
+            "批处理.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "如何结合关键词和语义搜索进行统一排序？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 13.700000762939453,
+          "searchMs": 13.745400000014342,
+          "endToEndMs": 1001.5,
+          "rankedTitles": [
+            "混合检索.txt",
+            "向量检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "电脑没有可用的图形加速时如何运行模型？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 15,
+          "searchMs": 13.133099999977276,
+          "endToEndMs": 1003,
+          "rankedTitles": [
+            "WebGPU.txt",
+            "WASM.txt",
+            "模型版本.txt",
+            "增量导入.txt",
+            "浏览器推理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "如何让刚刚写入的资料马上可以被查询到？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 15,
+          "searchMs": 13.305899999977555,
+          "endToEndMs": 1000.7000007629395,
+          "rankedTitles": [
+            "索引刷新.txt",
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "检索评测.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "怎样避免重复上传同一个文件造成重复数据？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 17.100000381469727,
+          "searchMs": 14.929099999950267,
+          "endToEndMs": 1002.6999998092651,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "增量导入.txt",
+            "模型版本.txt",
+            "索引刷新.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 0.6309297535714575
+        },
+        {
+          "trial": 1,
+          "query": "用什么指标比较量化前后的检索准确率？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 15.600000381469727,
+          "searchMs": 13.349800000025425,
+          "endToEndMs": 1002,
+          "rankedTitles": [
+            "检索评测.txt",
+            "模型量化.txt",
+            "性能计时.txt",
+            "中文嵌入.txt",
+            "批处理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "如何减少多条文本逐个推理造成的开销？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 16.899999618530273,
+          "searchMs": 13.04839999997057,
+          "endToEndMs": 1001.4000005722046,
+          "rankedTitles": [
+            "批处理.txt",
+            "索引刷新.txt",
+            "浏览器推理.txt",
+            "知识库隔离.txt",
+            "中文嵌入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "切换到另一个集合后怎样防止旧的搜索结果出现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 16.100000381469727,
+          "searchMs": 13.869699999981094,
+          "endToEndMs": 1001.8000001907349,
+          "rankedTitles": [
+            "知识库隔离.txt",
+            "混合检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "文档分块.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "中文文档的关键词匹配应该配置什么分词器？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 14.600000381469727,
+          "searchMs": 13.762799999967683,
+          "endToEndMs": 1000.8000001907349,
+          "rankedTitles": [
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "向量检索.txt",
+            "文档分块.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "本地计算是否意味着原文不会发送给数据库？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 15.100000381469727,
+          "searchMs": 12.804100000008475,
+          "endToEndMs": 1002.6000003814697,
+          "rankedTitles": [
+            "本地隐私.txt",
+            "浏览器推理.txt",
+            "事务与并发.txt",
+            "文档分块.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "为什么并发混合查询要保护数据库会话变量？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 15.699999809265137,
+          "searchMs": 13.509499999985565,
+          "endToEndMs": 1000.5999994277954,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "混合检索.txt",
+            "本地隐私.txt",
+            "中文嵌入.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 1,
+          "query": "怎样锁定模型版本保证实验可以复现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 14.799999237060547,
+          "searchMs": 12.785099999979138,
+          "endToEndMs": 1002.4000005722046,
+          "rankedTitles": [
+            "模型版本.txt",
+            "知识库隔离.txt",
+            "性能计时.txt",
+            "WASM.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "不用相同词语也能搜到相近意思是什么原理？",
+          "firstQueryInTrial": true,
+          "queryEmbeddingMs": 15.09999942779541,
+          "searchMs": 22.6589999999851,
+          "endToEndMs": 88.30000019073486,
+          "rankedTitles": [
+            "向量检索.txt",
+            "增量导入.txt",
+            "检索评测.txt",
+            "批处理.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "如何结合关键词和语义搜索进行统一排序？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 18.5,
+          "searchMs": 12.208600000012666,
+          "endToEndMs": 1000.5999994277954,
+          "rankedTitles": [
+            "混合检索.txt",
+            "向量检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "索引刷新.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "电脑没有可用的图形加速时如何运行模型？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 16.800000190734863,
+          "searchMs": 13.971799999999348,
+          "endToEndMs": 1001.5999994277954,
+          "rankedTitles": [
+            "WebGPU.txt",
+            "WASM.txt",
+            "模型版本.txt",
+            "增量导入.txt",
+            "浏览器推理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "如何让刚刚写入的资料马上可以被查询到？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 15,
+          "searchMs": 14.92239999998128,
+          "endToEndMs": 1001.8000001907349,
+          "rankedTitles": [
+            "索引刷新.txt",
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "检索评测.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "怎样避免重复上传同一个文件造成重复数据？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 17.199999809265137,
+          "searchMs": 13.414599999960046,
+          "endToEndMs": 1002.4000005722046,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "增量导入.txt",
+            "模型版本.txt",
+            "索引刷新.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 0.6309297535714575
+        },
+        {
+          "trial": 2,
+          "query": "用什么指标比较量化前后的检索准确率？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 14.5,
+          "searchMs": 14.002800000016578,
+          "endToEndMs": 1001.6000003814697,
+          "rankedTitles": [
+            "检索评测.txt",
+            "模型量化.txt",
+            "性能计时.txt",
+            "中文嵌入.txt",
+            "批处理.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "如何减少多条文本逐个推理造成的开销？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 17.100000381469727,
+          "searchMs": 16.175099999993108,
+          "endToEndMs": 1001.8000001907349,
+          "rankedTitles": [
+            "批处理.txt",
+            "索引刷新.txt",
+            "浏览器推理.txt",
+            "知识库隔离.txt",
+            "中文嵌入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "切换到另一个集合后怎样防止旧的搜索结果出现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 14.59999942779541,
+          "searchMs": 18.214600000006612,
+          "endToEndMs": 1001.6000003814697,
+          "rankedTitles": [
+            "知识库隔离.txt",
+            "混合检索.txt",
+            "全文索引.txt",
+            "检索评测.txt",
+            "文档分块.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "中文文档的关键词匹配应该配置什么分词器？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 16.899999618530273,
+          "searchMs": 15.069100000022445,
+          "endToEndMs": 1001.9000005722046,
+          "rankedTitles": [
+            "全文索引.txt",
+            "中文嵌入.txt",
+            "向量检索.txt",
+            "文档分块.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "本地计算是否意味着原文不会发送给数据库？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 16,
+          "searchMs": 14.278899999975692,
+          "endToEndMs": 1001.1999998092651,
+          "rankedTitles": [
+            "本地隐私.txt",
+            "浏览器推理.txt",
+            "事务与并发.txt",
+            "文档分块.txt",
+            "性能计时.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "为什么并发混合查询要保护数据库会话变量？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 14.100000381469727,
+          "searchMs": 13.114000000001397,
+          "endToEndMs": 1001.8000001907349,
+          "rankedTitles": [
+            "事务与并发.txt",
+            "混合检索.txt",
+            "本地隐私.txt",
+            "中文嵌入.txt",
+            "全文索引.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "trial": 2,
+          "query": "怎样锁定模型版本保证实验可以复现？",
+          "firstQueryInTrial": false,
+          "queryEmbeddingMs": 15.300000190734863,
+          "searchMs": 12.39249999995809,
+          "endToEndMs": 1001.8000001907349,
+          "rankedTitles": [
+            "模型版本.txt",
+            "知识库隔离.txt",
+            "性能计时.txt",
+            "WASM.txt",
+            "增量导入.txt"
+          ],
+          "recall": 1,
+          "ndcg": 1
+        }
+      ],
+      "load": {
+        "backend": "webgpu",
+        "dtype": "fp16",
+        "reason": "",
+        "loadMs": 870.3999996185303,
+        "reused": false
+      },
+      "firstInferenceMs": 848.8000001907349,
+      "summary": {
+        "chunksPerSecond": 121.95121998496646,
+        "embeddingMs": 147.5999994277954,
+        "writeMs": 206.9578999999212,
+        "refreshMs": 440.49280000000726,
+        "searchMs": 13.977400000032503,
+        "endToEndMs": 1001.8000001907349,
+        "recallAt5": 1,
+        "ndcgAt5": 0.9692441461309548
+      }
+    }
+  ]
+}

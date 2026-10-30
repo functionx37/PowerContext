@@ -1,0 +1,19 @@
+{
+  "measuredAt": "2026-10-29T15:12:39.154Z",
+  "passed": true,
+  "database": {
+    "mode": "embedded",
+    "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+  },
+  "checks": [
+    "create",
+    "write",
+    "idempotency",
+    "refresh",
+    "DB hybrid search",
+    "concurrent collection isolation",
+    "original source",
+    "persistent catalog",
+    "reject invalid vector"
+  ]
+}
