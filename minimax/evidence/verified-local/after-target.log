@@ -1,0 +1,61 @@
+$ node --test --test-reporter=tap tests/archive.test.mjs
+code_version=dc6687840995b1ff016102a1f07c4c2f19929d16582c41259f78b29c3b947126
+exit_code=0
+TAP version 13
+# Subtest: R-001 default hides archived tickets
+ok 1 - R-001 default hides archived tickets
+  ---
+  duration_ms: 1.0235
+  type: 'test'
+  ...
+# Subtest: R-001 empty options hides archived tickets
+ok 2 - R-001 empty options hides archived tickets
+  ---
+  duration_ms: 0.1531
+  type: 'test'
+  ...
+# Subtest: R-001 false hides archived tickets
+ok 3 - R-001 false hides archived tickets
+  ---
+  duration_ms: 0.0908
+  type: 'test'
+  ...
+# Subtest: R-001 only boolean true includes archived tickets
+ok 4 - R-001 only boolean true includes archived tickets
+  ---
+  duration_ms: 0.1674
+  type: 'test'
+  ...
+# Subtest: R-002 status intersects archive filter
+ok 5 - R-002 status intersects archive filter
+  ---
+  duration_ms: 0.1132
+  type: 'test'
+  ...
+# Subtest: R-002 tag intersects archive filter
+ok 6 - R-002 tag intersects archive filter
+  ---
+  duration_ms: 0.1171
+  type: 'test'
+  ...
+# Subtest: R-003 filtering precedes limit
+ok 7 - R-003 filtering precedes limit
+  ---
+  duration_ms: 0.1351
+  type: 'test'
+  ...
+# Subtest: R-001 legacy records without archived remain visible
+ok 8 - R-001 legacy records without archived remain visible
+  ---
+  duration_ms: 0.1109
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 81.3909

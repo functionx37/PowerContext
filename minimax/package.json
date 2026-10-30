@@ -1,0 +1,20 @@
+{
+  "name": "sdd-context-minimax",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "context": "node src/cli.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:business": "node --test sample/tests/*.test.mjs",
+    "verify": "node tools/verify.mjs",
+    "verify:live": "node tools/verify.mjs --live",
+    "services": "python tools/services.py"
+  },
+  "dependencies": {
+    "@seekdb/js-bindings": "1.4.0",
+    "seekdb": "1.4.0",
+    "dotenv": "16.6.1"
+  }
+}

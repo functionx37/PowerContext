@@ -1,0 +1,144 @@
+[
+  {
+    "stage": "baseline-context",
+    "version": "5.7.25-OceanBase seekdb-v1.4.0.0",
+    "operations": [
+      {
+        "query": "SELECT VERSION() AS version",
+        "parameters": [],
+        "row_count": 1,
+        "source_ids": []
+      },
+      {
+        "query": "REPLACE INTO sdd_imports (project, import_id, fingerprint) VALUES (?, ?, ?)",
+        "parameters": [
+          "ticket-desk",
+          "68e05668-4fb7-49b5-9371-f96df6f0c5a3",
+          "5bee4ff04cad7890ffd4cf01daa9da3302fe88b69f844ac4810a1fab68f93bc6"
+        ],
+        "row_count": null,
+        "source_ids": []
+      },
+      {
+        "query": "SELECT import_id, fingerprint FROM sdd_imports WHERE project = ?",
+        "parameters": [
+          "ticket-desk"
+        ],
+        "row_count": 1,
+        "source_ids": []
+      },
+      {
+        "query": "SELECT source_id, path, kind, spec_id, symbols, start_line, end_line, body, sha256\n      FROM sdd_documents WHERE import_id = ? AND\n      ((kind = 'spec' AND spec_id IN (?,?,?)) OR (kind <> 'spec' AND (symbols LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!')))\n      ORDER BY kind, source_id",
+        "parameters": [
+          "68e05668-4fb7-49b5-9371-f96df6f0c5a3",
+          "R-001",
+          "R-002",
+          "R-003",
+          "%|listTickets|%",
+          "%archived%",
+          "%includearchived%",
+          "%status%",
+          "%tag%",
+          "%limit%"
+        ],
+        "row_count": 8,
+        "source_ids": [
+          "src/create.mjs",
+          "src/tickets.mjs",
+          "data/tickets.json",
+          "specs/tickets.md#R-001",
+          "specs/tickets.md#R-002",
+          "specs/tickets.md#R-003",
+          "tests/archive.test.mjs",
+          "tests/regression.test.mjs"
+        ]
+      }
+    ]
+  },
+  {
+    "stage": "after-context",
+    "version": "5.7.25-OceanBase seekdb-v1.4.0.0",
+    "operations": [
+      {
+        "query": "SELECT VERSION() AS version",
+        "parameters": [],
+        "row_count": 1,
+        "source_ids": []
+      },
+      {
+        "query": "REPLACE INTO sdd_imports (project, import_id, fingerprint) VALUES (?, ?, ?)",
+        "parameters": [
+          "ticket-desk",
+          "6b2231da-dde1-485d-bd12-83e5cd137b81",
+          "dc6687840995b1ff016102a1f07c4c2f19929d16582c41259f78b29c3b947126"
+        ],
+        "row_count": null,
+        "source_ids": []
+      }
+    ]
+  },
+  {
+    "stage": "spec-updated",
+    "version": "5.7.25-OceanBase seekdb-v1.4.0.0",
+    "operations": [
+      {
+        "query": "SELECT VERSION() AS version",
+        "parameters": [],
+        "row_count": 1,
+        "source_ids": []
+      },
+      {
+        "query": "SELECT import_id, fingerprint FROM sdd_imports WHERE project = ?",
+        "parameters": [
+          "ticket-desk"
+        ],
+        "row_count": 1,
+        "source_ids": []
+      },
+      {
+        "query": "REPLACE INTO sdd_imports (project, import_id, fingerprint) VALUES (?, ?, ?)",
+        "parameters": [
+          "ticket-desk",
+          "10fd35af-2a40-472f-9507-b8b9ed009609",
+          "54e072e093048dc41e901fe036d90984354a230232a98e4dab8832db6a2231ad"
+        ],
+        "row_count": null,
+        "source_ids": []
+      },
+      {
+        "query": "SELECT import_id, fingerprint FROM sdd_imports WHERE project = ?",
+        "parameters": [
+          "ticket-desk"
+        ],
+        "row_count": 1,
+        "source_ids": []
+      },
+      {
+        "query": "SELECT source_id, path, kind, spec_id, symbols, start_line, end_line, body, sha256\n      FROM sdd_documents WHERE import_id = ? AND\n      ((kind = 'spec' AND spec_id IN (?,?,?)) OR (kind <> 'spec' AND (symbols LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!')))\n      ORDER BY kind, source_id",
+        "parameters": [
+          "10fd35af-2a40-472f-9507-b8b9ed009609",
+          "R-001",
+          "R-002",
+          "R-003",
+          "%|listTickets|%",
+          "%archived%",
+          "%includearchived%",
+          "%status%",
+          "%tag%",
+          "%limit%"
+        ],
+        "row_count": 8,
+        "source_ids": [
+          "src/create.mjs",
+          "src/tickets.mjs",
+          "data/tickets.json",
+          "specs/tickets.md#R-001",
+          "specs/tickets.md#R-002",
+          "specs/tickets.md#R-003",
+          "tests/archive.test.mjs",
+          "tests/regression.test.mjs"
+        ]
+      }
+    ]
+  }
+]

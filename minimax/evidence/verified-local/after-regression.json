@@ -1,0 +1,21 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "--test-reporter=tap",
+    "tests/regression.test.mjs"
+  ],
+  "code_version": "dc6687840995b1ff016102a1f07c4c2f19929d16582c41259f78b29c3b947126",
+  "test_files": [
+    {
+      "path": "tests/regression.test.mjs",
+      "sha256": "62349ea26d34e04ab0a01b957b7bb2b4f5b1897f6a753e5c43856a0430c83586"
+    }
+  ],
+  "exit_code": 0,
+  "passed": 9,
+  "failed": 0,
+  "skipped": 0,
+  "log": "TAP version 13\n# Subtest: R-002 original status query with explicit archived inclusion\nok 1 - R-002 original status query with explicit archived inclusion\n  ---\n  duration_ms: 1.9902\n  type: 'test'\n  ...\n# Subtest: R-002 combined status and tag\nok 2 - R-002 combined status and tag\n  ---\n  duration_ms: 0.1386\n  type: 'test'\n  ...\n# Subtest: R-002 empty status means no status filter\nok 3 - R-002 empty status means no status filter\n  ---\n  duration_ms: 0.1349\n  type: 'test'\n  ...\n# Subtest: R-002 invalid status is rejected\nok 4 - R-002 invalid status is rejected\n  ---\n  duration_ms: 0.3177\n  type: 'test'\n  ...\n# Subtest: R-003 zero limit and empty input\nok 5 - R-003 zero limit and empty input\n  ---\n  duration_ms: 0.119\n  type: 'test'\n  ...\n# Subtest: R-003 invalid limits are rejected\nok 6 - R-003 invalid limits are rejected\n  ---\n  duration_ms: 0.1241\n  type: 'test'\n  ...\n# Subtest: R-003 input order is preserved\nok 7 - R-003 input order is preserved\n  ---\n  duration_ms: 0.0951\n  type: 'test'\n  ...\n# Subtest: R-003 inputs are not mutated\nok 8 - R-003 inputs are not mutated\n  ---\n  duration_ms: 0.2129\n  type: 'test'\n  ...\n# Subtest: R-099 ticket creation remains unchanged\nok 9 - R-099 ticket creation remains unchanged\n  ---\n  duration_ms: 0.1838\n  type: 'test'\n  ...\n1..9\n# tests 9\n# suites 0\n# pass 9\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 80.8319\n",
+  "at": "2026-10-30T02:12:13.600Z"
+}

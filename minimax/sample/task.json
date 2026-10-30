@@ -1,0 +1,11 @@
+{
+  "id": "hide-archived-v1",
+  "description": "为 listTickets 增加归档可见性筛选：默认隐藏 archived=true，只有 includeArchived===true 才包含归档；与 status、tag、limit 组合并保持原有顺序及校验。",
+  "symbols": ["listTickets"],
+  "terms": ["archived", "includeArchived", "status", "tag", "limit"],
+  "spec_ids": ["R-001", "R-002", "R-003"],
+  "required_sources": ["specs/tickets.md#R-001", "specs/tickets.md#R-002", "specs/tickets.md#R-003", "src/tickets.mjs", "tests/archive.test.mjs", "tests/regression.test.mjs", "data/tickets.json"],
+  "editable": ["src/tickets.mjs"],
+  "target_tests": ["tests/archive.test.mjs"],
+  "regression_tests": ["tests/regression.test.mjs"]
+}

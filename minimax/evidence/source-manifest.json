@@ -1,0 +1,134 @@
+[
+  {
+    "path": ".env.example",
+    "sha256": "51b1b0ae78d0af6376eba6d98c5acc81cc0aaf92b47aaaf39aff364215f75412"
+  },
+  {
+    "path": ".gitignore",
+    "sha256": "6391761905dfb21208b6cf7bf293225008e01b9a47c7f5e438933fb1114ae1f2"
+  },
+  {
+    "path": ".npmrc",
+    "sha256": "2f179a09d5b0e9adb2c746e3ee12cbcc28cbcf71a11c94a498e2448b3ab21c67"
+  },
+  {
+    "path": "docs/TECHNICAL.md",
+    "sha256": "50bc9f764ce5ceb1ee650a9b8c393dddb5160118279c120a1a1407ec249c37c9"
+  },
+  {
+    "path": "docs/VALIDATION.md",
+    "sha256": "ec5cd43ed14fb696e86b2dc0599133d8d7698aa6622e93cd2ef9b29f86213a72"
+  },
+  {
+    "path": "evidence/before/tickets.mjs",
+    "sha256": "689ad5ad657a1eb613c64cdb76b78692ab5eff7714594a584277b34198cb614e"
+  },
+  {
+    "path": "evidence/README.md",
+    "sha256": "534e9a09d9fcb7dabd576cee2bf0842939f18dbc7892275d922d4bb831345a51"
+  },
+  {
+    "path": "package-lock.json",
+    "sha256": "bad91441f4c71d2e9677ff8109d904bef34f1906f2fdb5905db7e0cc546cb9e9"
+  },
+  {
+    "path": "package.json",
+    "sha256": "f8da9e396f36eb0f4b1439a0a6c7bc19178e7c39ccafbb9397d86730c753d01c"
+  },
+  {
+    "path": "README.md",
+    "sha256": "762080724ea8d70e4a53ddb6f6ee8f9ef74341de72079297785555151efa2abb"
+  },
+  {
+    "path": "requirements-lock-windows.txt",
+    "sha256": "282f76ad0d33abff4142ef1431d59ac9d3489edee8cb2d27b21c4d4eb96dd5d7"
+  },
+  {
+    "path": "requirements.txt",
+    "sha256": "d277aacc087526d11855e8d71b4ba9ea67a957e0f3177a090cd1663ca0abdb89"
+  },
+  {
+    "path": "sample/data/tickets.json",
+    "sha256": "e3e5758273a746ba241c3b6dab359e3b409cc2d304d1ec6bb658171042110422"
+  },
+  {
+    "path": "sample/project.json",
+    "sha256": "1e3c25bcab67c83a5925b65346e38e36612940b8c3fc667e33344219d59304b6"
+  },
+  {
+    "path": "sample/specs/tickets.md",
+    "sha256": "11d91787d1052adfd9fbb09b4125e3fe8bc564c0a427c722b31942a0748d1144"
+  },
+  {
+    "path": "sample/src/create.mjs",
+    "sha256": "b0060b46a805899db736883dfdc8b529095e8c9ddd53b594dc67eeb177c1615b"
+  },
+  {
+    "path": "sample/src/tickets.mjs",
+    "sha256": "f28e07bd044f992a32421df75df5f91a8f6bef33c4ee2ba0f40ae96ae57cc571"
+  },
+  {
+    "path": "sample/task.json",
+    "sha256": "78c38ff10bb16a82870cdea304c62fca5a8e8a57623d9aa793c6c395637b0177"
+  },
+  {
+    "path": "sample/tests/archive.test.mjs",
+    "sha256": "5239aac3cde5c8f5b1fed52daca84bd8de6eb86d453a338f22060a994059dc01"
+  },
+  {
+    "path": "sample/tests/regression.test.mjs",
+    "sha256": "62349ea26d34e04ab0a01b957b7bb2b4f5b1897f6a753e5c43856a0430c83586"
+  },
+  {
+    "path": "src/agent.mjs",
+    "sha256": "66cca6921fd514f63d65591cb363e8bcbfd6051cab25217894efc2b3a713f4a3"
+  },
+  {
+    "path": "src/cli.mjs",
+    "sha256": "300dd429d6caf7a610a1e144e2d110021ad9e2490e131491c3071bebc36f05c8"
+  },
+  {
+    "path": "src/context.mjs",
+    "sha256": "f78370692724f848468534bf0046542d42e32954d2027e1b091e70d3bcca7036"
+  },
+  {
+    "path": "src/indexer.mjs",
+    "sha256": "4053dca57509488e64d64a10b449060b663f7266f5b08eaa010c58f68637b807"
+  },
+  {
+    "path": "src/state.mjs",
+    "sha256": "127cda40c9ff4d4cedb477464e0d39e0529eed8af4a12995cb54855e09a0fa89"
+  },
+  {
+    "path": "src/store.mjs",
+    "sha256": "bd5d334ff32bad0c453a2acc3f394128d35af19d2ceecd0e50794774bf335ca7"
+  },
+  {
+    "path": "src/testing.mjs",
+    "sha256": "192d51d435536629322e7b30b49151581036acf27512dec51e6347512d78508c"
+  },
+  {
+    "path": "src/util.mjs",
+    "sha256": "ba745b49184482f586e0a3a443c9d1a163c1179adb6d3671ee726413bc7fd14c"
+  },
+  {
+    "path": "tests/module.test.mjs",
+    "sha256": "195b44464bb1a638888ed24c0d4c826fa7d1f7faf09b89d9436fed2164b06188"
+  },
+  {
+    "path": "tools/manifest.mjs",
+    "sha256": "fdb23d67105d8ef42e1e409c90d1ccc624ca03cab6fdcab9506f7855eaecc731"
+  },
+  {
+    "path": "tools/powercontext_service.py",
+    "sha256": "0d16c9b75ab5f86850b988d425fa67484e35744119b99a6875512e9cacbff3b1"
+  },
+  {
+    "path": "tools/services.py",
+    "sha256": "818900ae9c28057f149edffa4d618bc74a8cab03976ca04e89d8975de17e036e"
+  },
+  {
+    "path": "tools/verify.mjs",
+    "sha256": "65c1d06e1688f2ac160f353d678bc4ccbaef2caa6fb55eaa3d22b6d45eeecbf3"
+  }
+]

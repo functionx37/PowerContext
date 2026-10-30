@@ -1,0 +1,213 @@
+{
+  "schema": "sdd-context-v1",
+  "project": "ticket-desk",
+  "task": {
+    "id": "hide-archived-v1",
+    "description": "为 listTickets 增加归档可见性筛选：默认隐藏 archived=true，只有 includeArchived===true 才包含归档；与 status、tag、limit 组合并保持原有顺序及校验。",
+    "symbols": [
+      "listTickets"
+    ],
+    "terms": [
+      "archived",
+      "includeArchived",
+      "status",
+      "tag",
+      "limit"
+    ],
+    "spec_ids": [
+      "R-001",
+      "R-002",
+      "R-003"
+    ],
+    "required_sources": [
+      "specs/tickets.md#R-001",
+      "specs/tickets.md#R-002",
+      "specs/tickets.md#R-003",
+      "src/tickets.mjs",
+      "tests/archive.test.mjs",
+      "tests/regression.test.mjs",
+      "data/tickets.json"
+    ],
+    "editable": [
+      "src/tickets.mjs"
+    ],
+    "target_tests": [
+      "tests/archive.test.mjs"
+    ],
+    "regression_tests": [
+      "tests/regression.test.mjs"
+    ]
+  },
+  "corpus": {
+    "import_id": "68e05668-4fb7-49b5-9371-f96df6f0c5a3",
+    "fingerprint": "5bee4ff04cad7890ffd4cf01daa9da3302fe88b69f844ac4810a1fab68f93bc6"
+  },
+  "database": {
+    "engine": "5.7.25-OceanBase seekdb-v1.4.0.0",
+    "selection": "SQL spec IDs + symbol relations + literal keyword matching"
+  },
+  "sources": [
+    {
+      "source_id": "src/create.mjs",
+      "path": "src/create.mjs",
+      "kind": "code",
+      "spec_id": "",
+      "symbols": "|createTicket|",
+      "start_line": 1,
+      "end_line": 5,
+      "body": "export function createTicket(id, title) {\n  if (typeof title !== 'string' || !title.trim()) throw new RangeError('Title required');\n  return { id, title: title.trim(), status: 'open', tags: [], archived: false };\n}\n",
+      "sha256": "b0060b46a805899db736883dfdc8b529095e8c9ddd53b594dc67eeb177c1615b"
+    },
+    {
+      "source_id": "src/tickets.mjs",
+      "path": "src/tickets.mjs",
+      "kind": "code",
+      "spec_id": "",
+      "symbols": "|listTickets|",
+      "start_line": 1,
+      "end_line": 16,
+      "body": "/** Ticket query module. Input is an in-memory snapshot supplied by the caller. */\nexport function listTickets(tickets, options = {}) {\n  const { status, tag, limit } = options;\n  if (status && !['open', 'in_progress', 'closed'].includes(status)) {\n    throw new RangeError('Invalid status');\n  }\n  if (limit !== undefined && (!Number.isInteger(limit) || limit < 0)) {\n    throw new RangeError('Invalid limit');\n  }\n  const result = tickets.filter(ticket =>\n    (!status || ticket.status === status) &&\n    (tag === undefined || ticket.tags.includes(tag))\n  );\n  return limit === undefined ? result : result.slice(0, limit);\n}\n",
+      "sha256": "689ad5ad657a1eb613c64cdb76b78692ab5eff7714594a584277b34198cb614e"
+    },
+    {
+      "source_id": "data/tickets.json",
+      "path": "data/tickets.json",
+      "kind": "data",
+      "spec_id": "",
+      "symbols": "|listTickets|",
+      "start_line": 1,
+      "end_line": 8,
+      "body": "[\n  { \"id\": \"T1\", \"title\": \"修复登录\", \"status\": \"open\", \"tags\": [\"api\"], \"archived\": false },\n  { \"id\": \"T2\", \"title\": \"旧支付工单\", \"status\": \"open\", \"tags\": [\"api\"], \"archived\": true },\n  { \"id\": \"T3\", \"title\": \"页面布局\", \"status\": \"closed\", \"tags\": [\"web\"], \"archived\": false },\n  { \"id\": \"T4\", \"title\": \"旧页面\", \"status\": \"closed\", \"tags\": [\"web\"], \"archived\": true },\n  { \"id\": \"T5\", \"title\": \"历史数据\", \"status\": \"in_progress\", \"tags\": [\"api\"] }\n]\n",
+      "sha256": "e3e5758273a746ba241c3b6dab359e3b409cc2d304d1ec6bb658171042110422"
+    },
+    {
+      "source_id": "specs/tickets.md#R-001",
+      "path": "specs/tickets.md",
+      "kind": "spec",
+      "spec_id": "R-001",
+      "symbols": "|listTickets|createTicket|",
+      "start_line": 3,
+      "end_line": 7,
+      "body": "## R-001 归档可见性 archived includeArchived\nlistTickets 默认排除 archived 为 true 的工单。只有 options.includeArchived 严格等于 true 时才包含归档工单。\n未传 options、空 options、includeArchived 为 false、字符串 \"true\"、数字 1、null 时均隐藏归档工单。\n未设置 archived 字段的历史工单仍视为未归档。\n",
+      "sha256": "5a0668275b64157ba8ee09d3293682a0c88cabd5e74bf59bd8311f64ef49d839"
+    },
+    {
+      "source_id": "specs/tickets.md#R-002",
+      "path": "specs/tickets.md",
+      "kind": "spec",
+      "spec_id": "R-002",
+      "symbols": "|listTickets|createTicket|",
+      "start_line": 8,
+      "end_line": 11,
+      "body": "## R-002 筛选组合 status tag\nincludeArchived 与原有 status 和 tag 过滤取交集。status 只允许 open、in_progress、closed；未指定或为空字符串时不过滤状态。\n不合法的非空 status 抛出 RangeError。tag 使用精确匹配。\n",
+      "sha256": "d29cf8c16ea97f8861878df106ad5533730a71b33363c88b376cb8e3c163ba2e"
+    },
+    {
+      "source_id": "specs/tickets.md#R-003",
+      "path": "specs/tickets.md",
+      "kind": "spec",
+      "spec_id": "R-003",
+      "symbols": "|listTickets|createTicket|",
+      "start_line": 12,
+      "end_line": 15,
+      "body": "## R-003 兼容性 limit order immutable\n结果保持输入顺序，不修改输入数组、工单对象或 options。limit 是非负整数，未指定则不限制；0 返回空数组。\n不合法 limit 抛出 RangeError。空输入返回空数组。显式包含归档时，原有查询行为保持。\n",
+      "sha256": "5e56d8f42e7a5ed6c58e0c5aa4f1184cb468d09ecef7bb50e9fba44d1daf488b"
+    },
+    {
+      "source_id": "tests/archive.test.mjs",
+      "path": "tests/archive.test.mjs",
+      "kind": "test",
+      "spec_id": "",
+      "symbols": "|listTickets|",
+      "start_line": 1,
+      "end_line": 35,
+      "body": "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\nimport { readFileSync } from 'node:fs';\nimport { listTickets } from '../src/tickets.mjs';\nconst tickets = JSON.parse(readFileSync(new URL('../data/tickets.json', import.meta.url)));\nconst ids = rows => rows.map(t => t.id);\n\ntest('R-001 default hides archived tickets', () => {\n  assert.deepEqual(ids(listTickets(tickets)), ['T1', 'T3', 'T5']);\n});\ntest('R-001 empty options hides archived tickets', () => {\n  assert.deepEqual(ids(listTickets(tickets, {})), ['T1', 'T3', 'T5']);\n});\ntest('R-001 false hides archived tickets', () => {\n  assert.deepEqual(ids(listTickets(tickets, { includeArchived: false })), ['T1', 'T3', 'T5']);\n});\ntest('R-001 only boolean true includes archived tickets', () => {\n  for (const includeArchived of ['true', 1, null]) {\n    assert.deepEqual(ids(listTickets(tickets, { includeArchived })), ['T1', 'T3', 'T5']);\n  }\n  assert.deepEqual(ids(listTickets(tickets, { includeArchived: true })), ['T1', 'T2', 'T3', 'T4', 'T5']);\n});\ntest('R-002 status intersects archive filter', () => {\n  assert.deepEqual(ids(listTickets(tickets, { status: 'open' })), ['T1']);\n});\ntest('R-002 tag intersects archive filter', () => {\n  assert.deepEqual(ids(listTickets(tickets, { tag: 'web' })), ['T3']);\n});\ntest('R-003 filtering precedes limit', () => {\n  assert.deepEqual(ids(listTickets(tickets, { limit: 2 })), ['T1', 'T3']);\n});\ntest('R-001 legacy records without archived remain visible', () => {\n  assert.deepEqual(ids(listTickets(tickets, { status: 'in_progress' })), ['T5']);\n});\n",
+      "sha256": "5239aac3cde5c8f5b1fed52daca84bd8de6eb86d453a338f22060a994059dc01"
+    },
+    {
+      "source_id": "tests/regression.test.mjs",
+      "path": "tests/regression.test.mjs",
+      "kind": "test",
+      "spec_id": "",
+      "symbols": "|listTickets|createTicket|",
+      "start_line": 1,
+      "end_line": 40,
+      "body": "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\nimport { readFileSync } from 'node:fs';\nimport { listTickets } from '../src/tickets.mjs';\nimport { createTicket } from '../src/create.mjs';\nconst tickets = JSON.parse(readFileSync(new URL('../data/tickets.json', import.meta.url)));\nconst ids = rows => rows.map(t => t.id);\ntest('R-002 original status query with explicit archived inclusion', () => {\n  assert.deepEqual(ids(listTickets(tickets, { status: 'open', includeArchived: true })), ['T1', 'T2']);\n});\ntest('R-002 combined status and tag', () => {\n  assert.deepEqual(ids(listTickets(tickets, { status: 'closed', tag: 'api', includeArchived: true })), []);\n});\ntest('R-002 empty status means no status filter', () => {\n  assert.equal(listTickets(tickets, { status: '', includeArchived: true }).length, 5);\n});\ntest('R-002 invalid status is rejected', () => {\n  assert.throws(() => listTickets(tickets, { status: 'unknown' }), RangeError);\n});\ntest('R-003 zero limit and empty input', () => {\n  assert.deepEqual(listTickets(tickets, { limit: 0 }), []);\n  assert.deepEqual(listTickets([]), []);\n});\ntest('R-003 invalid limits are rejected', () => {\n  for (const limit of [-1, 1.5, '1', null]) assert.throws(() => listTickets(tickets, { limit }), RangeError);\n});\ntest('R-003 input order is preserved', () => {\n  assert.deepEqual(ids(listTickets([...tickets].reverse(), { includeArchived: true })), ['T5', 'T4', 'T3', 'T2', 'T1']);\n});\ntest('R-003 inputs are not mutated', () => {\n  const snapshot = structuredClone(tickets);\n  const options = Object.freeze({ status: 'open', limit: 1 });\n  listTickets(tickets, options);\n  assert.deepEqual(tickets, snapshot);\n});\ntest('R-099 ticket creation remains unchanged', () => {\n  assert.deepEqual(createTicket('T6', ' 新工单 '), { id: 'T6', title: '新工单', status: 'open', tags: [], archived: false });\n  assert.throws(() => createTicket('T6', ' '), RangeError);\n});\n",
+      "sha256": "62349ea26d34e04ab0a01b957b7bb2b4f5b1897f6a753e5c43856a0430c83586"
+    }
+  ],
+  "progress": {
+    "scope_id": "scp_2dxm8pa61pd4h5yhsznak3fkbh",
+    "state": {
+      "project": "ticket-desk",
+      "task_id": "hide-archived-v1",
+      "revision": 1,
+      "completed": [
+        "sources imported",
+        "context retrieved",
+        "baseline tests executed"
+      ],
+      "pending": [
+        "implement archive filter",
+        "run unchanged target and regression tests"
+      ],
+      "validations": [
+        {
+          "stage": "before",
+          "target": {
+            "command": [
+              "node",
+              "--test",
+              "--test-reporter=tap",
+              "tests/archive.test.mjs"
+            ],
+            "code_version": "5bee4ff04cad7890ffd4cf01daa9da3302fe88b69f844ac4810a1fab68f93bc6",
+            "test_files": [
+              {
+                "path": "tests/archive.test.mjs",
+                "sha256": "5239aac3cde5c8f5b1fed52daca84bd8de6eb86d453a338f22060a994059dc01"
+              }
+            ],
+            "exit_code": 1,
+            "passed": 1,
+            "failed": 7,
+            "skipped": 0,
+            "at": "2026-10-30T02:12:01.136Z",
+            "log_sha256": "fde1d26a2889084d8c642721551d21a2ac4f5e9210cb3fd03b739622a506e404"
+          },
+          "regression": {
+            "command": [
+              "node",
+              "--test",
+              "--test-reporter=tap",
+              "tests/regression.test.mjs"
+            ],
+            "code_version": "5bee4ff04cad7890ffd4cf01daa9da3302fe88b69f844ac4810a1fab68f93bc6",
+            "test_files": [
+              {
+                "path": "tests/regression.test.mjs",
+                "sha256": "62349ea26d34e04ab0a01b957b7bb2b4f5b1897f6a753e5c43856a0430c83586"
+              }
+            ],
+            "exit_code": 0,
+            "passed": 9,
+            "failed": 0,
+            "skipped": 0,
+            "at": "2026-10-30T02:12:01.289Z",
+            "log_sha256": "b8b87a033c389f4ee64714bb39d5f63f9579e49aaa05026d4579c1140570b6a9"
+          }
+        }
+      ],
+      "input_fingerprint": "5bee4ff04cad7890ffd4cf01daa9da3302fe88b69f844ac4810a1fab68f93bc6",
+      "saved_at": "2026-10-30T02:12:12.934Z",
+      "memory_ref": {
+        "family": "atomic-memory",
+        "artifact_id": "art_03b009391aac427ba8624c270dc6353d",
+        "revision": 1
+      }
+    },
+    "recalled": 1,
+    "validation_current": false
+  },
+  "next_action": "Resume pending work; rerun validation when source fingerprint changed"
+}

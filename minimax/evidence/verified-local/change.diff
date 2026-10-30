@@ -1,0 +1,12 @@
+diff --git a/sample/src/tickets.mjs b/sample/src/tickets.mjs
+index 9345f7a..5047a85 100644
+--- a/sample/src/tickets.mjs
++++ b/sample/src/tickets.mjs
+@@ -8,6 +8,7 @@ export function listTickets(tickets, options = {}) {
+     throw new RangeError('Invalid limit');
+   }
+   const result = tickets.filter(ticket =>
++    (options.includeArchived === true || ticket.archived !== true) &&
+     (!status || ticket.status === status) &&
+     (tag === undefined || ticket.tags.includes(tag))
+   );

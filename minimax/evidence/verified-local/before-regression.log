@@ -1,0 +1,67 @@
+$ node --test --test-reporter=tap tests/regression.test.mjs
+code_version=5bee4ff04cad7890ffd4cf01daa9da3302fe88b69f844ac4810a1fab68f93bc6
+exit_code=0
+TAP version 13
+# Subtest: R-002 original status query with explicit archived inclusion
+ok 1 - R-002 original status query with explicit archived inclusion
+  ---
+  duration_ms: 2.1057
+  type: 'test'
+  ...
+# Subtest: R-002 combined status and tag
+ok 2 - R-002 combined status and tag
+  ---
+  duration_ms: 0.1952
+  type: 'test'
+  ...
+# Subtest: R-002 empty status means no status filter
+ok 3 - R-002 empty status means no status filter
+  ---
+  duration_ms: 0.1138
+  type: 'test'
+  ...
+# Subtest: R-002 invalid status is rejected
+ok 4 - R-002 invalid status is rejected
+  ---
+  duration_ms: 0.3833
+  type: 'test'
+  ...
+# Subtest: R-003 zero limit and empty input
+ok 5 - R-003 zero limit and empty input
+  ---
+  duration_ms: 0.1205
+  type: 'test'
+  ...
+# Subtest: R-003 invalid limits are rejected
+ok 6 - R-003 invalid limits are rejected
+  ---
+  duration_ms: 0.1389
+  type: 'test'
+  ...
+# Subtest: R-003 input order is preserved
+ok 7 - R-003 input order is preserved
+  ---
+  duration_ms: 0.1166
+  type: 'test'
+  ...
+# Subtest: R-003 inputs are not mutated
+ok 8 - R-003 inputs are not mutated
+  ---
+  duration_ms: 0.2755
+  type: 'test'
+  ...
+# Subtest: R-099 ticket creation remains unchanged
+ok 9 - R-099 ticket creation remains unchanged
+  ---
+  duration_ms: 0.2296
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 89.4491

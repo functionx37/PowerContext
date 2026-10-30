@@ -1,0 +1,282 @@
+$ node --test --test-reporter=tap tests/archive.test.mjs
+code_version=5bee4ff04cad7890ffd4cf01daa9da3302fe88b69f844ac4810a1fab68f93bc6
+exit_code=1
+TAP version 13
+# Subtest: R-001 default hides archived tickets
+not ok 1 - R-001 default hides archived tickets
+  ---
+  duration_ms: 3.4018
+  type: 'test'
+  location: 'D:\\Desktop\\PowerContext\\minimax\\.runtime\\2026-10-30T02-12-00-899Z-40816\\project\\tests\\archive.test.mjs:8:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'T1',
+    +   'T2',
+        'T3',
+    +   'T4',
+        'T5'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'T1'
+    1: 'T3'
+    2: 'T5'
+  actual:
+    0: 'T1'
+    1: 'T2'
+    2: 'T3'
+    3: 'T4'
+    4: 'T5'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///D:/Desktop/PowerContext/minimax/.runtime/2026-10-30T02-12-00-899Z-40816/project/tests/archive.test.mjs:9:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1306:25)
+    Test.start (node:internal/test_runner/test:1177:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+  ...
+# Subtest: R-001 empty options hides archived tickets
+not ok 2 - R-001 empty options hides archived tickets
+  ---
+  duration_ms: 0.3509
+  type: 'test'
+  location: 'D:\\Desktop\\PowerContext\\minimax\\.runtime\\2026-10-30T02-12-00-899Z-40816\\project\\tests\\archive.test.mjs:11:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'T1',
+    +   'T2',
+        'T3',
+    +   'T4',
+        'T5'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'T1'
+    1: 'T3'
+    2: 'T5'
+  actual:
+    0: 'T1'
+    1: 'T2'
+    2: 'T3'
+    3: 'T4'
+    4: 'T5'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///D:/Desktop/PowerContext/minimax/.runtime/2026-10-30T02-12-00-899Z-40816/project/tests/archive.test.mjs:12:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1306:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+    Test.postRun (node:internal/test_runner/test:1447:19)
+    Test.run (node:internal/test_runner/test:1372:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+  ...
+# Subtest: R-001 false hides archived tickets
+not ok 3 - R-001 false hides archived tickets
+  ---
+  duration_ms: 0.2231
+  type: 'test'
+  location: 'D:\\Desktop\\PowerContext\\minimax\\.runtime\\2026-10-30T02-12-00-899Z-40816\\project\\tests\\archive.test.mjs:14:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'T1',
+    +   'T2',
+        'T3',
+    +   'T4',
+        'T5'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'T1'
+    1: 'T3'
+    2: 'T5'
+  actual:
+    0: 'T1'
+    1: 'T2'
+    2: 'T3'
+    3: 'T4'
+    4: 'T5'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///D:/Desktop/PowerContext/minimax/.runtime/2026-10-30T02-12-00-899Z-40816/project/tests/archive.test.mjs:15:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1306:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+    Test.postRun (node:internal/test_runner/test:1447:19)
+    Test.run (node:internal/test_runner/test:1372:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: R-001 only boolean true includes archived tickets
+not ok 4 - R-001 only boolean true includes archived tickets
+  ---
+  duration_ms: 0.1899
+  type: 'test'
+  location: 'D:\\Desktop\\PowerContext\\minimax\\.runtime\\2026-10-30T02-12-00-899Z-40816\\project\\tests\\archive.test.mjs:17:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'T1',
+    +   'T2',
+        'T3',
+    +   'T4',
+        'T5'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'T1'
+    1: 'T3'
+    2: 'T5'
+  actual:
+    0: 'T1'
+    1: 'T2'
+    2: 'T3'
+    3: 'T4'
+    4: 'T5'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///D:/Desktop/PowerContext/minimax/.runtime/2026-10-30T02-12-00-899Z-40816/project/tests/archive.test.mjs:19:12)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1306:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+    Test.postRun (node:internal/test_runner/test:1447:19)
+    Test.run (node:internal/test_runner/test:1372:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: R-002 status intersects archive filter
+not ok 5 - R-002 status intersects archive filter
+  ---
+  duration_ms: 0.1864
+  type: 'test'
+  location: 'D:\\Desktop\\PowerContext\\minimax\\.runtime\\2026-10-30T02-12-00-899Z-40816\\project\\tests\\archive.test.mjs:23:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'T1',
+    +   'T2'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'T1'
+  actual:
+    0: 'T1'
+    1: 'T2'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///D:/Desktop/PowerContext/minimax/.runtime/2026-10-30T02-12-00-899Z-40816/project/tests/archive.test.mjs:24:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1306:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+    Test.postRun (node:internal/test_runner/test:1447:19)
+    Test.run (node:internal/test_runner/test:1372:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: R-002 tag intersects archive filter
+not ok 6 - R-002 tag intersects archive filter
+  ---
+  duration_ms: 0.1455
+  type: 'test'
+  location: 'D:\\Desktop\\PowerContext\\minimax\\.runtime\\2026-10-30T02-12-00-899Z-40816\\project\\tests\\archive.test.mjs:26:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'T3',
+    +   'T4'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'T3'
+  actual:
+    0: 'T3'
+    1: 'T4'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///D:/Desktop/PowerContext/minimax/.runtime/2026-10-30T02-12-00-899Z-40816/project/tests/archive.test.mjs:27:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1306:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+    Test.postRun (node:internal/test_runner/test:1447:19)
+    Test.run (node:internal/test_runner/test:1372:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: R-003 filtering precedes limit
+not ok 7 - R-003 filtering precedes limit
+  ---
+  duration_ms: 0.3145
+  type: 'test'
+  location: 'D:\\Desktop\\PowerContext\\minimax\\.runtime\\2026-10-30T02-12-00-899Z-40816\\project\\tests\\archive.test.mjs:29:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'T1',
+    +   'T2'
+    -   'T3'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'T1'
+    1: 'T3'
+  actual:
+    0: 'T1'
+    1: 'T2'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///D:/Desktop/PowerContext/minimax/.runtime/2026-10-30T02-12-00-899Z-40816/project/tests/archive.test.mjs:30:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1306:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+    Test.postRun (node:internal/test_runner/test:1447:19)
+    Test.run (node:internal/test_runner/test:1372:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: R-001 legacy records without archived remain visible
+ok 8 - R-001 legacy records without archived remain visible
+  ---
+  duration_ms: 0.1468
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 1
+# fail 7
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 86.3485

@@ -1,0 +1,116 @@
+{
+  "database": [
+    {
+      "query": "SELECT VERSION() AS version",
+      "parameters": [],
+      "row_count": 1,
+      "source_ids": []
+    },
+    {
+      "query": "CREATE TABLE IF NOT EXISTS sdd_imports (\n        project VARCHAR(64) PRIMARY KEY, import_id VARCHAR(64) NOT NULL, fingerprint VARCHAR(64) NOT NULL)",
+      "parameters": [],
+      "row_count": null,
+      "source_ids": []
+    },
+    {
+      "query": "CREATE TABLE IF NOT EXISTS sdd_documents (\n        import_id VARCHAR(64) NOT NULL, source_id VARCHAR(256) NOT NULL, path VARCHAR(256) NOT NULL,\n        kind VARCHAR(16) NOT NULL, spec_id VARCHAR(32) NOT NULL, symbols TEXT NOT NULL,\n        start_line INT NOT NULL, end_line INT NOT NULL, body LONGTEXT NOT NULL, sha256 VARCHAR(64) NOT NULL,\n        PRIMARY KEY(import_id, source_id))",
+      "parameters": [],
+      "row_count": null,
+      "source_ids": []
+    },
+    {
+      "query": "SELECT import_id, fingerprint FROM sdd_imports WHERE project = ?",
+      "parameters": [
+        "ticket-desk"
+      ],
+      "row_count": 1,
+      "source_ids": []
+    },
+    {
+      "query": "SELECT source_id, path, kind, spec_id, symbols, start_line, end_line, body, sha256\n      FROM sdd_documents WHERE import_id = ? AND\n      ((kind = 'spec' AND spec_id IN (?,?,?)) OR (kind <> 'spec' AND (symbols LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!' OR LOWER(body) LIKE ? ESCAPE '!')))\n      ORDER BY kind, source_id",
+      "parameters": [
+        "6b2231da-dde1-485d-bd12-83e5cd137b81",
+        "R-001",
+        "R-002",
+        "R-003",
+        "%|listTickets|%",
+        "%archived%",
+        "%includearchived%",
+        "%status%",
+        "%tag%",
+        "%limit%"
+      ],
+      "row_count": 8,
+      "source_ids": [
+        "src/create.mjs",
+        "src/tickets.mjs",
+        "data/tickets.json",
+        "specs/tickets.md#R-001",
+        "specs/tickets.md#R-002",
+        "specs/tickets.md#R-003",
+        "tests/archive.test.mjs",
+        "tests/regression.test.mjs"
+      ]
+    }
+  ],
+  "powercontext": [
+    {
+      "path": "/v1/scopes",
+      "request": {
+        "title": "SDD / ticket-desk / hide-archived-v1",
+        "summary": "SDD task progress and validation snapshots; one writer per task.",
+        "idempotency_key": "sdd-v1-6b9ae57b5f850465c9811c7bf5f1ca204f9120de5a3accb61bc2f7ae327df209"
+      },
+      "response": {
+        "scope_id": "scp_2dxm8pa61pd4h5yhsznak3fkbh",
+        "title": "SDD / ticket-desk / hide-archived-v1",
+        "summary": "SDD task progress and validation snapshots; one writer per task.",
+        "parent_scope_id": null,
+        "context_references": [],
+        "external_references": [],
+        "version": 1
+      }
+    },
+    {
+      "path": "/v1/atomic-memory/list",
+      "request": {
+        "scope_id": "scp_2dxm8pa61pd4h5yhsznak3fkbh",
+        "kind": "sdd-task-v1",
+        "states": [
+          "active"
+        ],
+        "limit": 100,
+        "cursor": null
+      },
+      "response": {
+        "items": [
+          {
+            "artifact": {
+              "family": "atomic-memory",
+              "artifact_id": "art_03b009391aac427ba8624c270dc6353d",
+              "revision": 1
+            },
+            "kind": "sdd-task-v1",
+            "text": "SDD task checkpoint v1\n{\"project\":\"ticket-desk\",\"task_id\":\"hide-archived-v1\",\"revision\":1,\"completed\":[\"sources imported\",\"context retrieved\",\"baseline tests executed\"],\"pending\":[\"implement archive filter\",\"run unchanged target and regression tests\"],\"validations\":[{\"stage\":\"before\",\"target\":{\"command\":[\"node\",\"--test\",\"--test-reporter=tap\",\"tests/archive.test.mjs\"],\"code_version\":\"5bee4ff04cad7890ffd4cf01daa9da3302fe88b69f844ac4810a1fab68f93bc6\",\"test_files\":[{\"path\":\"tests/archive.test.mjs\",\"sha256\":\"5239aac3cde5c8f5b1fed52daca84bd8de6eb86d453a338f22060a994059dc01\"}],\"exit_code\":1,\"passed\":1,\"failed\":7,\"skipped\":0,\"at\":\"2026-10-30T02:12:01.136Z\",\"log_sha256\":\"fde1d26a2889084d8c642721551d21a2ac4f5e9210cb3fd03b739622a506e404\"},\"regression\":{\"command\":[\"node\",\"--test\",\"--test-reporter=tap\",\"tests/regression.test.mjs\"],\"code_version\":\"5bee4ff04cad7890ffd4cf01daa9da3302fe88b69f844ac4810a1fab68f93bc6\",\"test_files\":[{\"path\":\"tests/regression.test.mjs\",\"sha256\":\"62349ea26d34e04ab0a01b957b7bb2b4f5b1897f6a753e5c43856a0430c83586\"}],\"exit_code\":0,\"passed\":9,\"failed\":0,\"skipped\":0,\"at\":\"2026-10-30T02:12:01.289Z\",\"log_sha256\":\"b8b87a033c389f4ee64714bb39d5f63f9579e49aaa05026d4579c1140570b6a9\"}}],\"input_fingerprint\":\"5bee4ff04cad7890ffd4cf01daa9da3302fe88b69f844ac4810a1fab68f93bc6\",\"saved_at\":\"2026-10-30T02:12:12.934Z\"}",
+            "state": "active",
+            "state_version": 0,
+            "merged_into_id": null
+          },
+          {
+            "artifact": {
+              "family": "atomic-memory",
+              "artifact_id": "art_640a32511fec40cd9eb5d79a31ff8008",
+              "revision": 1
+            },
+            "kind": "sdd-task-v1",
+            "text": "SDD task checkpoint v1\n{\"project\":\"ticket-desk\",\"task_id\":\"hide-archived-v1\",\"revision\":2,\"completed\":[\"sources imported\",\"context retrieved\",\"code modified\",\"target and regression passed\"],\"pending\":[],\"validations\":[{\"stage\":\"after\",\"target\":{\"command\":[\"node\",\"--test\",\"--test-reporter=tap\",\"tests/archive.test.mjs\"],\"code_version\":\"dc6687840995b1ff016102a1f07c4c2f19929d16582c41259f78b29c3b947126\",\"test_files\":[{\"path\":\"tests/archive.test.mjs\",\"sha256\":\"5239aac3cde5c8f5b1fed52daca84bd8de6eb86d453a338f22060a994059dc01\"}],\"exit_code\":0,\"passed\":8,\"failed\":0,\"skipped\":0,\"at\":\"2026-10-30T02:12:13.463Z\",\"log_sha256\":\"7b5d78967f05f8feccb526f581997377d6b358bc4bca90ffd2eff0f35356fc7a\"},\"regression\":{\"command\":[\"node\",\"--test\",\"--test-reporter=tap\",\"tests/regression.test.mjs\"],\"code_version\":\"dc6687840995b1ff016102a1f07c4c2f19929d16582c41259f78b29c3b947126\",\"test_files\":[{\"path\":\"tests/regression.test.mjs\",\"sha256\":\"62349ea26d34e04ab0a01b957b7bb2b4f5b1897f6a753e5c43856a0430c83586\"}],\"exit_code\":0,\"passed\":9,\"failed\":0,\"skipped\":0,\"at\":\"2026-10-30T02:12:13.600Z\",\"log_sha256\":\"d3e2ecdfd702771e14519c36c6b86df1c22f5cc0016239e3214b07c52bb274a8\"}}],\"input_fingerprint\":\"5bee4ff04cad7890ffd4cf01daa9da3302fe88b69f844ac4810a1fab68f93bc6\",\"saved_at\":\"2026-10-30T02:12:13.651Z\",\"validated_fingerprint\":\"dc6687840995b1ff016102a1f07c4c2f19929d16582c41259f78b29c3b947126\",\"implementation_author\":\"Codex reference implementation; no MiniMax API call\"}",
+            "state": "active",
+            "state_version": 0,
+            "merged_into_id": null
+          }
+        ],
+        "next_cursor": null
+      }
+    }
+  ]
+}

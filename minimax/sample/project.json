@@ -1,0 +1,11 @@
+{
+  "id": "ticket-desk",
+  "sources": [
+    { "path": "specs/tickets.md", "kind": "spec", "symbols": ["listTickets", "createTicket"] },
+    { "path": "src/tickets.mjs", "kind": "code", "symbols": ["listTickets"] },
+    { "path": "src/create.mjs", "kind": "code", "symbols": ["createTicket"] },
+    { "path": "tests/archive.test.mjs", "kind": "test", "symbols": ["listTickets"] },
+    { "path": "tests/regression.test.mjs", "kind": "test", "symbols": ["listTickets", "createTicket"] },
+    { "path": "data/tickets.json", "kind": "data", "symbols": ["listTickets"] }
+  ]
+}
