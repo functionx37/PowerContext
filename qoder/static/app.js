@@ -1,5 +1,17 @@
 const API_BASE = window.location.origin;
 
+async function apiRequest(path, options = {}) {
+    const resp = await fetch(`${API_BASE}${path}`, options);
+    const data = await resp.json();
+    if (!resp.ok) {
+        const detail = Array.isArray(data.detail)
+            ? data.detail.map(item => item.msg).join('；')
+            : data.detail;
+        throw new Error(detail || `请求失败 (${resp.status})`);
+    }
+    return data;
+}
+
 // --- Tab Navigation ---
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -18,8 +30,7 @@ async function checkStatus() {
     const dot = badge.querySelector('.status-dot');
     const text = badge.querySelector('.status-text');
     try {
-        const resp = await fetch(`${API_BASE}/api/health`);
-        const data = await resp.json();
+        const data = await apiRequest('/api/health');
         if (data.powercontext === 'connected') {
             badge.className = 'status-badge connected';
             text.textContent = 'PowerContext 已连接';
@@ -38,12 +49,10 @@ async function checkStatus() {
 // --- Dashboard ---
 async function loadDashboard() {
     try {
-        const [statsResp, historyResp] = await Promise.all([
-            fetch(`${API_BASE}/api/stats`),
-            fetch(`${API_BASE}/api/study/history?limit=20`)
+        const [stats, history] = await Promise.all([
+            apiRequest('/api/stats'),
+            apiRequest('/api/study/history?limit=20')
         ]);
-        const stats = await statsResp.json();
-        const history = await historyResp.json();
 
         document.getElementById('totalSessions').textContent = stats.total_sessions || 0;
         document.getElementById('totalMinutes').textContent = stats.total_minutes || 0;
@@ -54,7 +63,7 @@ async function loadDashboard() {
         if (history.records && history.records.length > 0) {
             historyEl.innerHTML = history.records.slice(0, 10).map(r => {
                 const lines = (r.text || '').split('\n');
-                const topic = lines.find(l => l.includes('学习主题:'))?.split(':').slice(1).join(':').trim() || '未知主题';
+                const topic = r.topic || '未知主题';
                 const duration = lines.find(l => l.includes('时长:'))?.trim() || '';
                 const confidence = lines.find(l => l.includes('掌握程度:'))?.trim() || '';
                 return `<div class="history-item">
@@ -76,7 +85,11 @@ async function loadDashboard() {
             topicsEl.innerHTML = '<p class="empty-hint">记录学习后这里会显示你的高频主题</p>';
         }
     } catch (err) {
-        console.error('Failed to load dashboard:', err);
+        ['totalSessions', 'totalMinutes', 'uniqueTopics'].forEach(id => {
+            document.getElementById(id).textContent = '—';
+        });
+        document.getElementById('recentHistory').textContent = `无法读取学习记录：${err.message}`;
+        document.getElementById('topTopics').textContent = '连接恢复后请重新打开学习面板。';
     }
 }
 
@@ -100,7 +113,7 @@ if (studyForm) {
         result.classList.add('hidden');
 
         try {
-            const resp = await fetch(`${API_BASE}/api/study/record`, {
+            const data = await apiRequest('/api/study/record', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -111,7 +124,6 @@ if (studyForm) {
                     notes: document.getElementById('notes').value,
                 })
             });
-            const data = await resp.json();
 
             if (data.success) {
                 result.className = 'form-result success';
@@ -124,7 +136,7 @@ if (studyForm) {
             }
         } catch (err) {
             result.className = 'form-result error';
-            result.textContent = `✗ 网络错误: ${err.message}`;
+            result.textContent = `✗ 保存失败: ${err.message}`;
         } finally {
             result.classList.remove('hidden');
             btn.disabled = false;
@@ -144,12 +156,11 @@ if (reviewBtn) {
         reviewBtn.textContent = '检索中...';
 
         try {
-            const resp = await fetch(`${API_BASE}/api/study/review`, {
+            const data = await apiRequest('/api/study/review', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query, limit: 10 })
             });
-            const data = await resp.json();
 
             const resultsEl = document.getElementById('reviewResults');
             const topicsEl = document.getElementById('reviewTopics');
@@ -158,10 +169,10 @@ if (reviewBtn) {
             resultsEl.classList.remove('hidden');
 
             if (data.related_topics && data.related_topics.length > 0) {
-                topicsEl.innerHTML = data.related_topics.map(t =>
+                topicsEl.innerHTML = data.related_topics.map((t, index) =>
                     `<div class="review-topic-item">
                         <div class="topic-name">${escapeHtml(t.topic || '未知主题')}</div>
-                        <div class="topic-score">相关度: ${(t.score * 100).toFixed(1)}%</div>
+                        <div class="topic-score">匹配排序: ${index + 1}</div>
                         <div class="topic-preview">${escapeHtml(t.text_preview || '')}</div>
                     </div>`
                 ).join('');
@@ -171,7 +182,9 @@ if (reviewBtn) {
 
             contextEl.textContent = data.context_summary || '暂无上下文信息';
         } catch (err) {
-            console.error('Review search failed:', err);
+            document.getElementById('reviewResults').classList.remove('hidden');
+            document.getElementById('reviewTopics').textContent = `检索失败：${err.message}`;
+            document.getElementById('reviewContext').textContent = '';
         } finally {
             reviewBtn.disabled = false;
             reviewBtn.textContent = '检索复习内容';
@@ -191,12 +204,11 @@ async function sendMessage() {
     const loadingId = appendMessage('assistant', '<span class="loading"></span> 思考中...', true);
 
     try {
-        const resp = await fetch(`${API_BASE}/api/chat`, {
+        const data = await apiRequest('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: msg })
         });
-        const data = await resp.json();
 
         let content = `<strong>${escapeHtml(data.suggestion || '')}</strong>`;
 
@@ -214,7 +226,7 @@ async function sendMessage() {
 
         updateMessage(loadingId, content);
     } catch (err) {
-        updateMessage(loadingId, `请求失败: ${err.message}`);
+        updateMessage(loadingId, escapeHtml(`请求失败: ${err.message}`));
     }
 }
 

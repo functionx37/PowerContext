@@ -47,7 +47,7 @@ const DEMO_REVIEWS = {
     ],
 };
 
-const DEMO_CONTEXT = `## PowerContext 组装的学习上下文
+const DEMO_CONTEXT = `## 学习上下文示例（静态演示，未调用 PowerContext）
 
 [scope: smartstudy-default]
 [query: 复习建议]
@@ -84,9 +84,9 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
 
 // --- Status ---
 const badge = document.getElementById('statusBadge');
-badge.className = 'status-badge connected';
+badge.className = 'status-badge';
 badge.querySelector('.status-text').textContent = DEMO_MODE ? '演示模式' : '已连接';
-document.getElementById('pcStatus').textContent = '✓';
+document.getElementById('pcStatus').textContent = '演示';
 
 // --- Dashboard ---
 function loadDashboard() {
@@ -151,7 +151,7 @@ if (studyForm) {
             DEMO_TOPICS[cat] = (DEMO_TOPICS[cat] || 0) + 1;
 
             result.className = 'form-result success';
-            result.textContent = `✓ 已记录学习: ${topic} (${duration}分钟) — 数据已通过 PowerContext POST /v1/memory/remember 存储`;
+            result.textContent = `✓ 已添加本页演示记录: ${topic} (${duration}分钟) — 刷新后重置；未写入 PowerContext。真实保存请按运行说明启动本地应用。`;
             result.classList.remove('hidden');
             studyForm.reset();
             confValue.textContent = '5';
@@ -203,7 +203,7 @@ if (reviewBtn) {
             topicsEl.innerHTML = matches.map(t =>
                 `<div class="review-topic-item">
                     <div class="topic-name">${escapeHtml(t.topic)}</div>
-                    <div class="topic-score">相关度: ${(t.score * 100).toFixed(1)}% (PowerContext /v1/memory/search)</div>
+                    <div class="topic-score">演示匹配度: ${(t.score * 100).toFixed(1)}%（示例数据）</div>
                     <div class="topic-preview">${escapeHtml(t.preview)}</div>
                 </div>`
             ).join('');
@@ -227,7 +227,7 @@ async function sendMessage() {
     input.value = '';
     appendMessage('user', msg);
 
-    const loadingId = appendMessage('assistant', '<span class="loading"></span> 正在从 PowerContext 检索相关记忆...', true);
+    const loadingId = appendMessage('assistant', '<span class="loading"></span> 正在生成示例回复...', true);
 
     await sleep(1000);
 
@@ -236,7 +236,7 @@ async function sendMessage() {
     const lowerMsg = msg.toLowerCase();
 
     if (lowerMsg.includes('数学') || lowerMsg.includes('线性代数') || lowerMsg.includes('矩阵')) {
-        response = `根据你在 PowerContext 中的学习记录，你学过以下数学相关内容：
+        response = `【静态演示】示例数据中包含以下数学相关内容：
 
 <strong>📊 学习概览：</strong>
 • 线性代数 - 矩阵乘法（掌握 7/10，45分钟）
@@ -246,7 +246,7 @@ async function sendMessage() {
 <strong>💡 建议：</strong>
 特征值分解的掌握程度较低，建议重点复习。可以从矩阵的基本运算开始，逐步深入到特征值和特征向量的求解。`;
     } else if (lowerMsg.includes('算法') || lowerMsg.includes('编程')) {
-        response = `你的 PowerContext 记忆中存储了以下算法学习内容：
+        response = `【静态演示】示例数据中包含以下算法学习内容：
 
 <strong>📊 学习概览：</strong>
 • 算法 - 动态规划（掌握 4/10，120分钟）⚠️ 需重点复习
@@ -257,7 +257,7 @@ async function sendMessage() {
 <strong>💡 建议：</strong>
 动态规划是你投入时间最多但掌握程度最低的内容。建议从简单的背包问题开始，理解状态定义和转移方程的核心思想。`;
     } else if (lowerMsg.includes('英语') || lowerMsg.includes('语言')) {
-        response = `根据 PowerContext 中的记录，你的英语学习情况如下：
+        response = `【静态演示】示例英语学习情况如下：
 
 <strong>📊 学习概览：</strong>
 • 英语 - 虚拟语气（掌握 6/10，30分钟）
@@ -266,14 +266,14 @@ async function sendMessage() {
 <strong>💡 建议：</strong>
 定语从句掌握较好，虚拟语气还需要更多练习。建议通过造句练习来巩固虚拟语气的用法。`;
     } else {
-        response = `我已从 PowerContext 中检索了你的学习记录。你共学习了 ${DEMO_HISTORY.length} 次，累计 ${DEMO_HISTORY.reduce((s, h) => s + h.duration, 0)} 分钟，涵盖 ${Object.keys(DEMO_TOPICS).length} 个主题领域。
+        response = `【静态演示】本页示例共 ${DEMO_HISTORY.length} 次学习，累计 ${DEMO_HISTORY.reduce((s, h) => s + h.duration, 0)} 分钟，涵盖 ${Object.keys(DEMO_TOPICS).length} 个主题领域。
 
 你可以问我关于具体学科的问题，比如：
 • "我学过哪些数学内容？"
 • "算法方面哪些需要重点复习？"
 • "我的英语学习进度如何？"
 
-<em style="color:#64748B;font-size:12px;">↑ 此回复基于 PowerContext /v1/context/prepare 组装的上下文生成</em>`;
+<em style="color:#64748B;font-size:12px;">↑ 此回复为静态示例；真实记忆读写、检索和上下文请在本地应用中验证。</em>`;
     }
 
     updateMessage(loadingId, response);

@@ -1,337 +1,286 @@
-"""SmartStudy - 智能学习教练后端服务器
+"""SmartStudy: study records stored and recalled through real PowerContext APIs."""
 
-基于 FastAPI 构建，集成 PowerContext 实现学习记忆与上下文管理。
-"""
-
+import asyncio
+import logging
 import os
-import uuid
-from datetime import datetime
+import re
 from contextlib import asynccontextmanager
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Literal
+from urllib.parse import quote
 
 import httpx
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
-load_dotenv()
-
-POWERCONTEXT_URL = os.getenv("POWERCONTEXT_URL", "http://127.0.0.1:8000")
+ROOT = Path(__file__).resolve().parent
+load_dotenv(ROOT / ".env")
+POWERCONTEXT_URL = os.getenv("POWERCONTEXT_URL", "http://127.0.0.1:8000").rstrip("/")
 POWERCONTEXT_TOKEN = os.getenv("POWERCONTEXT_TOKEN", "")
+# This may be an existing Scope ID OR a stable key for creating one.
 SCOPE_ID = os.getenv("POWERCONTEXT_SCOPE_ID", "smartstudy-default")
-
-pc_client: httpx.AsyncClient | None = None
-
-
-def _pc_headers() -> dict[str, str]:
-    headers = {"Content-Type": "application/json"}
-    if POWERCONTEXT_TOKEN:
-        headers["Authorization"] = f"Bearer {POWERCONTEXT_TOKEN}"
-    return headers
-
-
-async def _ensure_scope():
-    assert pc_client is not None
-    try:
-        resp = await pc_client.get(
-            f"/v1/scopes/{SCOPE_ID}", headers=_pc_headers()
-        )
-        if resp.status_code == 200:
-            return
-    except Exception:
-        pass
-
-    try:
-        await pc_client.post(
-            "/v1/scopes",
-            headers=_pc_headers(),
-            json={
-                "title": "SmartStudy 学习记录",
-                "summary": "智能学习教练的用户学习数据空间",
-                "idempotency_key": SCOPE_ID,
-            },
-        )
-    except Exception:
-        pass
+KIND = "study-session"
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global pc_client
-    pc_client = httpx.AsyncClient(base_url=POWERCONTEXT_URL, timeout=30.0)
-    await _ensure_scope()
-    yield
-    await pc_client.aclose()
+    headers = {"Authorization": f"Bearer {POWERCONTEXT_TOKEN}"} if POWERCONTEXT_TOKEN else {}
+    async with httpx.AsyncClient(base_url=POWERCONTEXT_URL, headers=headers, timeout=30, trust_env=False) as client:
+        app.state.pc = client
+        app.state.scope_id = None
+        app.state.scope_lock = asyncio.Lock()
+        yield
 
 
 app = FastAPI(title="SmartStudy - 智能学习教练", lifespan=lifespan)
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-# --- Request / Response Models ---
 
 class StudyRecord(BaseModel):
-    topic: str = Field(..., description="学习主题")
-    duration_minutes: int = Field(..., ge=1, description="学习时长（分钟）")
-    notes: str = Field("", description="学习笔记")
-    difficulty: str = Field("medium", description="难度: easy/medium/hard")
-    confidence: int = Field(5, ge=1, le=10, description="掌握程度 1-10")
+    topic: str = Field(min_length=1, max_length=200, description="学习主题")
+    duration_minutes: int = Field(ge=1, le=600, description="学习时长（分钟）")
+    notes: str = Field("", max_length=2200, description="学习笔记")
+    difficulty: Literal["easy", "medium", "hard"] = "medium"
+    confidence: int = Field(5, ge=1, le=10)
 
-class ReviewRequest(BaseModel):
-    query: str = Field(..., description="复习查询内容")
-    limit: int = Field(10, ge=1, le=50)
+    @field_validator("topic")
+    @classmethod
+    def validate_topic(cls, value):
+        value = value.strip()
+        if not value or "\n" in value or "\r" in value:
+            raise ValueError("请填写单行学习主题")
+        return value
 
-class ChatRequest(BaseModel):
-    message: str = Field(..., description="用户消息")
 
 class MemorySearchRequest(BaseModel):
-    query: str = Field(..., description="搜索关键词")
+    query: str = Field(min_length=1, max_length=8192, pattern=r"\S")
     limit: int = Field(10, ge=1, le=50)
 
 
-# --- PowerContext Integration ---
-
-async def _remember(text: str, kind: str, reason: str = ""):
-    assert pc_client is not None
-    resp = await pc_client.post(
-        "/v1/memory/remember",
-        headers=_pc_headers(),
-        json={
-            "scope_id": SCOPE_ID,
-            "kind": kind,
-            "text": text,
-            "reason": reason,
-        },
-    )
-    if resp.status_code != 200:
-        raise HTTPException(502, f"PowerContext remember failed: {resp.text}")
-    return resp.json()
-
-async def _search_memory(query: str, limit: int = 10):
-    assert pc_client is not None
-    resp = await pc_client.post(
-        "/v1/memory/search",
-        headers=_pc_headers(),
-        json={
-            "scope_id": SCOPE_ID,
-            "query": query,
-            "limit": limit,
-            "mode": "auto",
-        },
-    )
-    if resp.status_code != 200:
-        return {"hits": []}
-    return resp.json()
-
-async def _prepare_context(query: str, max_bytes: int = 8000):
-    assert pc_client is not None
-    resp = await pc_client.post(
-        "/v1/context/prepare",
-        headers=_pc_headers(),
-        json={
-            "scope_id": SCOPE_ID,
-            "query": query,
-            "max_bytes": max_bytes,
-        },
-    )
-    if resp.status_code != 200:
-        return {"context": ""}
-    return resp.json()
-
-async def _list_memories(kind: str | None = None, limit: int = 50):
-    assert pc_client is not None
-    body: dict = {"scope_id": SCOPE_ID, "limit": limit}
-    if kind:
-        body["kind"] = kind
-    resp = await pc_client.post(
-        "/v1/memory/entries/list",
-        headers=_pc_headers(),
-        json=body,
-    )
-    if resp.status_code != 200:
-        return {"entries": []}
-    return resp.json()
+class ReviewRequest(MemorySearchRequest):
+    pass
 
 
-# --- API Routes ---
+class ChatRequest(BaseModel):
+    message: str = Field(min_length=1, max_length=8192, pattern=r"\S")
+
+
+async def _pc_request(method, path, payload=None, *, allow_missing=False):
+    try:
+        response = await app.state.pc.request(method, path, json=payload)
+        if allow_missing and response.status_code == 404:
+            return None
+        response.raise_for_status()
+        data = response.json()
+        if not isinstance(data, dict):
+            raise ValueError("Expected an object")
+        return data
+    except httpx.HTTPStatusError as error:
+        status = error.response.status_code
+        logger.warning("PowerContext %s returned HTTP %s", path, status)
+        detail = "PowerContext 认证失败，请检查 POWERCONTEXT_TOKEN。" if status in (401, 403) else (
+            f"PowerContext 请求失败（HTTP {status}，{path}），请检查服务日志。"
+        )
+        raise HTTPException(503 if status >= 500 else 502, detail) from error
+    except (httpx.HTTPError, ValueError) as error:
+        raise HTTPException(503, "PowerContext 服务不可用或响应无效，请检查服务地址与运行日志。") from error
+
+
+async def _ensure_scope():
+    if app.state.scope_id:
+        return app.state.scope_id
+    async with app.state.scope_lock:
+        if app.state.scope_id:
+            return app.state.scope_id
+        scope = await _pc_request("GET", f"/v1/scopes/{quote(SCOPE_ID, safe='')}", allow_missing=True)
+        if scope is None:
+            scope = await _pc_request("POST", "/v1/scopes", {
+                "title": "SmartStudy 学习记录", "summary": "智能学习教练的用户学习数据空间",
+                "idempotency_key": SCOPE_ID,
+            })
+        if not isinstance(scope.get("scope_id"), str) or not scope["scope_id"]:
+            raise HTTPException(503, "PowerContext 未返回有效的数据空间 ID。")
+        app.state.scope_id = scope["scope_id"]
+        return app.state.scope_id
+
+
+async def _remember(text, reason):
+    result = await _pc_request("POST", "/v1/memory/remember", {
+        "scope_id": await _ensure_scope(), "kind": KIND, "text": text, "reason": reason,
+    })
+    if not result.get("records"):
+        raise HTTPException(503, "PowerContext 未返回记忆引用，无法确认保存成功。")
+    return result
+
+
+async def _search_memory(query, limit=10):
+    result = await _pc_request("POST", "/v1/memory/search", {
+        "scope_id": await _ensure_scope(), "query": query, "limit": limit, "mode": "auto",
+    })
+    if not isinstance(result.get("hits"), list):
+        raise HTTPException(503, "PowerContext 检索响应无效。")
+    return result
+
+
+async def _prepare_context(query, max_bytes=8000):
+    result = await _pc_request("POST", "/v1/context/prepare", {
+        "scope_id": await _ensure_scope(), "query": query, "max_bytes": max_bytes,
+        "assembly": {"sections": [{"family": "memory", "limit": 8}]},
+    })
+    if result.get("status") not in ("ready", "empty"):
+        raise HTTPException(503, "PowerContext 上下文响应无效。")
+    # Preserve the complete server-rendered text, citations and byte boundaries.
+    return result.get("content") or ""
+
+
+def _study_fields(text):
+    # Parse only the record header. Notes may themselves contain labels or colons.
+    header = text.split("\n笔记:", 1)[0]
+    def field(label):
+        match = re.search(r"(?:^|\n)(?:\[[^\]\n]+\]\s*)?" + label + r":\s*([^\n]*)", header)
+        return match.group(1).strip() if match else ""
+    timestamp = re.match(r"\[([^\]]+)\]", header)
+    duration = re.match(r"(\d+)", field("时长"))
+    confidence = re.match(r"(\d+)", field("掌握程度"))
+    return {
+        "topic": field("学习主题"),
+        "duration_minutes": int(duration.group(1)) if duration else 0,
+        "confidence": int(confidence.group(1)) if confidence else None,
+        "created_at": timestamp.group(1) if timestamp else "",
+    }
+
+
+async def _list_memories():
+    scope_id = await _ensure_scope()
+    entries, cursor, seen = [], None, set()
+    while True:
+        page = await _pc_request("POST", "/v1/atomic-memory/list", {
+            "scope_id": scope_id, "kind": KIND, "states": ["active"], "limit": 100, "cursor": cursor,
+        })
+        if not isinstance(page.get("items"), list):
+            raise HTTPException(503, "PowerContext 历史响应无效。")
+        entries.extend(page["items"])
+        cursor = page.get("next_cursor")
+        if not cursor:
+            break
+        if cursor in seen:
+            raise HTTPException(503, "PowerContext 返回了重复分页游标。")
+        seen.add(cursor)
+    return sorted(entries, key=lambda entry: _study_fields(entry.get("text", ""))["created_at"], reverse=True)
+
 
 @app.get("/api/health")
 async def health():
-    pc_status = "disconnected"
-    if pc_client:
-        try:
-            r = await pc_client.get("/health/live", headers=_pc_headers())
-            if r.status_code == 200:
-                pc_status = "connected"
-        except Exception:
-            pc_status = "error"
-    return {"status": "ok", "powercontext": pc_status, "scope_id": SCOPE_ID}
+    try:
+        await _pc_request("GET", "/health/ready")
+        scope_id = await _ensure_scope()
+        return {"status": "ok", "powercontext": "connected", "scope_id": scope_id}
+    except HTTPException as error:
+        return {"status": "degraded", "powercontext": "disconnected", "scope_id": None, "detail": error.detail}
 
 
 @app.post("/api/study/record")
 async def add_study_record(record: StudyRecord):
-    now = datetime.now().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     text = (
-        f"[{now}] 学习主题: {record.topic}\n"
-        f"时长: {record.duration_minutes} 分钟\n"
-        f"难度: {record.difficulty}\n"
-        f"掌握程度: {record.confidence}/10\n"
-        f"笔记: {record.notes}"
+        f"[{now}] 学习主题: {record.topic}\n时长: {record.duration_minutes} 分钟\n"
+        f"难度: {record.difficulty}\n掌握程度: {record.confidence}/10\n笔记: {record.notes}"
     )
-    result = await _remember(
-        text=text,
-        kind="study-session",
-        reason=f"记录用户学习 {record.topic} 的情况",
-    )
-    return {
-        "success": True,
-        "message": f"已记录学习: {record.topic} ({record.duration_minutes}分钟)",
-        "powercontext_result": result,
-    }
+    if len(text.encode("utf-8")) > 8192:
+        raise HTTPException(422, "学习记录超过 8192 字节，请缩短笔记。")
+    result = await _remember(text, f"记录用户学习 {record.topic} 的情况")
+    return {"success": True, "message": f"已记录学习: {record.topic} ({record.duration_minutes}分钟)",
+            "powercontext_result": result}
 
 
 @app.post("/api/study/search")
 async def search_study_memories(req: MemorySearchRequest):
     results = await _search_memory(req.query, req.limit)
     context = await _prepare_context(req.query)
-    return {
-        "query": req.query,
-        "hits": results.get("hits", []),
-        "context": context.get("context", ""),
-    }
+    return {"query": req.query, "hits": results["hits"], "context": context}
 
 
 @app.post("/api/study/review")
 async def get_review_suggestions(req: ReviewRequest):
-    search_results = await _search_memory(req.query, req.limit)
-    context_data = await _prepare_context(
-        f"复习建议: {req.query}", max_bytes=12000
-    )
-
-    hits = search_results.get("hits", [])
+    results = await _search_memory(req.query, req.limit)
+    context = await _prepare_context(req.query, max_bytes=12000)
     topics = []
-    for hit in hits:
-        memory = hit.get("memory", {})
-        text = memory.get("text", "")
-        if "学习主题:" in text:
-            topic_line = text.split("\n")[0]
-            topics.append({
-                "topic": topic_line.replace("[", "").split("]")[1] if "]" in topic_line else topic_line,
-                "score": hit.get("score", 0),
-                "text_preview": text[:200],
-            })
-
-    return {
-        "query": req.query,
-        "related_topics": topics,
-        "context_summary": context_data.get("context", "")[:500],
-        "total_memories_found": len(hits),
-    }
+    for hit in results["hits"]:
+        memory = hit["memory"]
+        fields = _study_fields(memory["text"])
+        if memory.get("kind") == KIND and fields["topic"]:
+            topics.append({**fields, "score": hit["score"], "text_preview": memory["text"][:200],
+                           "memory_ref": memory["artifact"]})
+    return {"query": req.query, "related_topics": topics, "context_summary": context,
+            "total_memories_found": len(topics)}
 
 
 @app.get("/api/study/history")
-async def get_study_history(limit: int = 50):
-    results = await _list_memories(kind="study-session", limit=limit)
-    entries = results.get("entries", [])
-
-    records = []
-    for entry in entries:
-        records.append({
-            "id": entry.get("artifact_id", entry.get("id", "")),
-            "text": entry.get("text", ""),
-            "created_at": entry.get("created_at", ""),
-            "kind": entry.get("kind", ""),
-        })
-
-    return {"records": records, "total": len(records)}
+async def get_study_history(limit: int = Query(50, ge=1, le=1000)):
+    entries = await _list_memories()
+    records = [{"id": entry["artifact"]["artifact_id"], "memory_ref": entry["artifact"],
+                "text": entry["text"], "kind": entry["kind"], **_study_fields(entry["text"])}
+               for entry in entries[:limit]]
+    return {"records": records, "total": len(entries)}
 
 
 @app.post("/api/chat")
 async def chat_with_context(req: ChatRequest):
-    context_data = await _prepare_context(req.message)
-    search_results = await _search_memory(req.message, limit=5)
-
-    context_text = context_data.get("context", "")
-    hits = search_results.get("hits", [])
-
-    related_info = []
-    for hit in hits:
-        memory = hit.get("memory", {})
-        related_info.append(memory.get("text", "")[:300])
-
-    return {
-        "user_message": req.message,
-        "retrieved_context": context_text[:1000] if context_text else "暂无相关学习记录",
-        "related_memories": related_info[:3],
-        "suggestion": _generate_suggestion(req.message, context_text, related_info),
-    }
+    context = await _prepare_context(req.message)
+    results = await _search_memory(req.message, limit=5)
+    memories = [hit["memory"] for hit in results["hits"] if hit["memory"].get("kind") == KIND]
+    overview = any(phrase in req.message for phrase in ("学过哪些", "学习概况", "所有学习", "学习记录"))
+    if not memories and overview:
+        memories = (await _list_memories())[:5]
+    related = [memory["text"] for memory in memories]
+    return {"user_message": req.message, "retrieved_context": context or "暂无相关学习记录",
+            "related_memories": related, "memory_refs": [memory["artifact"] for memory in memories],
+            "suggestion": _generate_suggestion(req.message, context, related)}
 
 
-def _generate_suggestion(message: str, context: str, memories: list) -> str:
-    if not memories and not context:
-        return f"你还没有关于「{message}」的学习记录。建议开始学习相关内容，我会帮你记住进度！"
-
-    memory_count = len(memories)
-    return (
-        f"根据你的学习记录，我找到了 {memory_count} 条相关内容。"
-        f"建议复习之前的笔记，重点关注掌握程度较低的部分。"
-        f"坚持每天复习，记忆效果会更好！"
-    )
+def _generate_suggestion(message, context, memories):
+    if not memories:
+        return f"未找到关于「{message}」的学习记录，请先记录相关学习内容。"
+    fields = [_study_fields(text) for text in memories]
+    topics = "、".join(dict.fromkeys(item["topic"] for item in fields if item["topic"]))
+    weakest = min(fields, key=lambda item: item["confidence"] if item["confidence"] is not None else 11)
+    advice = (f"建议优先复习「{weakest['topic']}」（掌握程度 {weakest['confidence']}/10），结合笔记做练习。"
+              if weakest["confidence"] is not None else "建议结合笔记进行复习和练习。")
+    return f"根据你的学习记录，找到 {len(memories)} 条相关内容：{topics}。{advice}"
 
 
 @app.get("/api/stats")
 async def get_study_stats():
-    results = await _list_memories(kind="study-session", limit=200)
-    entries = results.get("entries", [])
-
-    total_sessions = len(entries)
-    total_minutes = 0
-    topics = {}
-
+    entries = await _list_memories()
+    topics, total_minutes = {}, 0
     for entry in entries:
-        text = entry.get("text", "")
-        for line in text.split("\n"):
-            if "时长:" in line:
-                try:
-                    mins = int(line.split(":")[1].strip().split(" ")[0])
-                    total_minutes += mins
-                except (ValueError, IndexError):
-                    pass
-            if "学习主题:" in line:
-                topic = line.split("学习主题:")[1].strip()
-                topics[topic] = topics.get(topic, 0) + 1
-
-    return {
-        "total_sessions": total_sessions,
-        "total_minutes": total_minutes,
-        "unique_topics": len(topics),
-        "top_topics": sorted(topics.items(), key=lambda x: x[1], reverse=True)[:10],
-    }
+        fields = _study_fields(entry["text"])
+        total_minutes += fields["duration_minutes"]
+        if fields["topic"]:
+            topics[fields["topic"]] = topics.get(fields["topic"], 0) + 1
+    return {"total_sessions": len(entries), "total_minutes": total_minutes, "unique_topics": len(topics),
+            "top_topics": sorted(topics.items(), key=lambda item: item[1], reverse=True)[:10]}
 
 
-# --- Serve Frontend ---
+app.mount("/static", StaticFiles(directory=ROOT / "static"), name="static")
 
-static_dir = os.path.join(os.path.dirname(__file__), "static")
-if os.path.isdir(static_dir):
-    app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
-    @app.get("/")
-    async def serve_index():
-        return FileResponse(os.path.join(static_dir, "index.html"))
+@app.get("/")
+async def serve_index():
+    return FileResponse(ROOT / "static" / "index.html")
 
-    @app.get("/favicon.ico")
-    async def favicon():
-        return FileResponse(os.path.join(static_dir, "favicon.ico"))
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return Response(status_code=204)
 
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("server:app", host="0.0.0.0", port=8080, reload=True)
+    uvicorn.run(app, host="127.0.0.1", port=8080)

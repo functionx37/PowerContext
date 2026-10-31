@@ -1,214 +1,133 @@
-# SmartStudy - 智能学习教练
+# SmartStudy — 智能学习教练
 
-基于 **PowerContext** 记忆服务的智能学习助手，帮助学习者记录学习过程、管理知识记忆、获取个性化复习建议。
+记录学习主题、时长、掌握程度和笔记，用 PowerContext 保存历史，在复习和问答时重新检索这些记录。主要功能包括学习记录、学习面板、复习检索和基于记忆的学习建议。
 
-## 项目简介
+## 本次修复与验证范围
 
-SmartStudy 解决的核心问题：
-- **学习记录分散** — 笔记散落在各处，难以系统回顾
-- **复习缺乏针对性** — 不知道哪些知识点需要重点复习
-- **学习进度不可见** — 无法直观了解自己的学习轨迹和投入
+已用 **Python 3.12.8 + 官方 PowerContext 1.4.1** 实测完整 HTTP 流程，并停止、重新启动两个服务后核对记录和检索结果。回归测试 18 项通过，覆盖真实集成、分页、输入校验、服务中断和错误反馈。运行证据见 [`evidence/verification.json`](evidence/verification.json)，修复前实际失败响应见 [`evidence/before.json`](evidence/before.json)。
 
-通过集成 PowerContext 上下文服务，系统能够记住每位用户的学习历史，在后续复习和问答中复用这些记忆，实现"越用越懂你"的学习体验。
+修复的主要问题：
 
-## 技术架构
+- 原代码把创建 Scope 的幂等键当成真实 Scope ID，保存时报 `scope_not_found`。现在使用服务返回的 `scope_id`，重启时通过相同幂等键找回同一空间；创建参数与旧版本保持一致，兼容旧版本已经创建的空间。
+- 历史列表改用 `/v1/atomic-memory/list`，读取 `items` 和 `artifact`，完整遍历分页，再按时间排序。统计不再请求超出上限的单页数据，也不会把笔记中的“时长”误算为学习时间。
+- 上下文读取真实返回字段 `content`，完整保留服务生成的引用和边界；修复复习主题解析，问答优先提示掌握程度较低的记录。
+- 上游连接、鉴权和接口错误不再伪装成空结果；页面展示可操作的错误信息。
+- 补齐 PowerContext 和测试依赖、本地双服务启动器、自动验收脚本。
 
-| 组件 | 技术 | 作用 |
-|------|------|------|
-| 后端 | Python FastAPI | RESTful API 服务，桥接前端与 PowerContext |
-| 前端 | HTML/CSS/JavaScript | 单页应用，提供学习记录、复习、问答界面 |
-| 记忆服务 | PowerContext HTTP API | 存储学习记忆、语义检索、上下文组装 |
-| 部署 | Qoder Sites | 项目网站发布与公开访问 |
+`static/` 是完整应用，必须通过后端访问。`web/` 是 Qoder Sites 展示页的静态演示源码，使用示例数据，不写入真实记忆。本次同时纠正了演示页中错误的“已写入 PowerContext”等提示；本地改动尚需在 Qoder Sites 重新发布才会更新线上展示页。
 
-## 环境要求
+## 从零运行（Windows PowerShell）
 
-- Python 3.10+
-- PowerContext 服务（本地或远程）
-- 网络连接（用于访问 PowerContext API）
+需要 Python **3.11+**；本次验证版本为 3.12.8。所有命令从仓库的 `qoder` 目录执行。首次安装需要网络；默认本地运行不需要模型 API Key、Docker 或独立数据库。
 
-## 快速开始
-
-### 1. 安装依赖
-
-```bash
-cd qoder/
-pip install -r requirements.txt
+```powershell
+cd qoder
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe tools\run_local.py
 ```
 
-### 2. 配置环境变量
+打开 **http://127.0.0.1:8080**。启动器会先启动官方 PowerContext，再启动 SmartStudy，检查连接及数据空间是否就绪。页面右上角应显示“PowerContext 已连接”。接口文档位于 http://127.0.0.1:8080/docs。
 
-```bash
-cp .env.example .env
+默认端口：PowerContext `8000`、SmartStudy `8080`。发生冲突时可指定：
+
+```powershell
+.venv\Scripts\python.exe tools\run_local.py --pc-port 18000 --port 18080
 ```
 
-编辑 `.env` 文件：
+此时打开 http://127.0.0.1:18080。启动器只监听本机地址，数据和日志保存在 `qoder/.runtime/`，包括官方 PowerContext 的 SQLite 数据库 `state.db`。按 Ctrl+C 停止，或从另一个终端执行：
 
-```env
-POWERCONTEXT_URL=http://127.0.0.1:8000   # PowerContext 服务地址
-POWERCONTEXT_TOKEN=your_token_here         # 认证 Token（可选）
-POWERCONTEXT_SCOPE_ID=smartstudy-default   # 数据空间 ID
+```powershell
+.venv\Scripts\python.exe tools\run_local.py --stop
 ```
 
-### 3. 启动 PowerContext 服务
+重新运行原启动命令会保留学习历史。使用自定义 `--data-dir` 时，停止和再次启动也传入相同目录。启动器不会复用或终止其他应用占用的端口。
 
-如果尚未部署 PowerContext，请参考 [PowerContext 文档](https://powercontext.oceanbase.io/zh/docs/develop/api-quickstart/) 进行部署。
+Linux/macOS：`python3 -m venv .venv`，安装和运行时将上述 Python 路径换成 `.venv/bin/python`。这些系统未在本次机器上实测。
 
-快速启动（本地模式）：
+### 接入已经运行的 PowerContext
 
-```bash
-# 使用 PowerContext CLI
-python -c "from powercontext.cli.app import main; main()" server run --host 127.0.0.1 --port 8000
+已有服务时无需使用双服务启动器。复制配置并只启动后端：
+
+```powershell
+Copy-Item .env.example .env
+# 编辑 .env，填写现有服务的地址；没有启用认证时 Token 留空
+.venv\Scripts\python.exe server.py
 ```
 
-### 4. 启动 SmartStudy 后端
-
-```bash
-python server.py
+```dotenv
+POWERCONTEXT_URL=http://127.0.0.1:8000
+POWERCONTEXT_TOKEN=
+POWERCONTEXT_SCOPE_ID=smartstudy-default
 ```
 
-服务将在 `http://localhost:8080` 启动。
+`.env` 始终从 `qoder/.env` 读取，不依赖启动命令的当前目录。`POWERCONTEXT_SCOPE_ID` 可以是真实存在的 Scope ID，也可以是稳定的创建幂等键。默认 `smartstudy-default` 是幂等键，实际 ID 可通过 `/api/health` 查看。保持相同的键和 PowerContext 数据库，才能恢复原记录。此版本使用一个配置空间，面向个人本地使用。
 
-### 5. 访问应用
+双服务启动器会使用自己的本地服务地址、空 Token 和隔离的数据库设置；接入远程服务请使用上面的 `server.py` 方式。
 
-打开浏览器访问 `http://localhost:8080`，即可使用 SmartStudy。
+## 按步骤验证主要功能
 
-## 核心功能
+初始状态：新数据目录、面板 0 条学习记录。
 
-### 学习记录
-记录每次学习的主题、时长、难度、掌握程度和笔记，数据通过 `POST /v1/memory/remember` 存入 PowerContext。
+1. 点击“记录学习”，输入主题 `线性代数 - 矩阵乘法`、45 分钟、掌握程度 7/10、笔记 `需要注意矩阵维度匹配`。保存后应显示成功。
+2. 打开“学习面板”，应显示 1 条记录、45 分钟、1 个主题；最近学习展示正确的主题名称。
+3. 再记录主题 `线性代数 - 矩阵求逆`、30 分钟、掌握程度 3/10。面板变为 2 条记录、75 分钟、2 个主题。
+4. 在“智能复习”查询 `矩阵`，应出现两条真实记录和完整上下文，包含 `Scope`、`Artifact` 来源引用及结束标记。界面展示匹配排序；PowerContext 的原始排序分值不是概率。
+5. 在“学习问答”输入 `矩阵`，回复应提及这两条记录，并建议优先复习“矩阵求逆”（3/10）。输入 `我学过哪些内容？` 可以查看学习概况。
+6. 停止并重新运行原启动命令，面板和复习检索应仍可读到相同记录。
 
-### 智能复习
-输入复习关键词，系统通过 `POST /v1/memory/search` 从 PowerContext 语义检索相关学习记录，并通过 `POST /v1/context/prepare` 组装上下文。
+问答根据检索到的主题和掌握程度生成规则式建议，未调用外部大模型。PowerContext 搜索使用 `auto`；默认无嵌入模型时使用全文检索，不能将其声称为已验证的向量语义检索。返回的上下文以安全纯文本展示。
 
-### 学习问答
-基于 PowerContext 中存储的学习记忆进行问答，系统自动检索相关上下文并提供个性化建议。
+### 自动验收
 
-### 学习面板
-可视化展示学习统计数据：总记录数、累计学习时长、学习主题分布等。
-
-## PowerContext 集成说明
-
-本项目使用 PowerContext 的以下 HTTP API：
-
-| API 端点 | 用途 |
-|----------|------|
-| `POST /v1/memory/remember` | 存储学习记录为记忆条目 |
-| `POST /v1/memory/search` | 按语义相似度检索相关学习记忆 |
-| `POST /v1/context/prepare` | 组装有界上下文供问答使用 |
-| `POST /v1/memory/entries/list` | 列出学习历史记录 |
-| `GET /v1/scopes/{scope_id}` | 检查数据空间是否存在 |
-| `POST /v1/scopes` | 创建数据空间 |
-| `GET /health/live` | 健康检查 |
-
-PowerContext 在本项目中承担的角色：
-1. **持久化存储** — 所有学习记录以记忆形式存储在 PowerContext 中
-2. **语义检索** — 复习和问答时，通过语义搜索找到相关学习内容
-3. **上下文组装** — 将多条相关记忆组装为有界上下文，供前端展示
-
-## 验证样例
-
-### 样例 1：记录学习并查看统计
-
-**初始状态**：首次启动，无学习记录
-
-**操作步骤**：
-1. 打开 `http://localhost:8080`
-2. 点击「记录学习」标签
-3. 填写表单：
-   - 学习主题：`线性代数 - 矩阵乘法`
-   - 学习时长：`45` 分钟
-   - 难度：`中等`
-   - 掌握程度：`7/10`
-   - 笔记：`学习了矩阵乘法的基本规则，需要注意维度匹配`
-4. 点击「保存学习记录」
-5. 切换到「学习面板」
-
-**预期结果**：
-- 保存成功，显示绿色提示
-- 学习面板显示：学习记录 1 条，累计 45 分钟，1 个主题
-- PowerContext 状态显示已连接
-
-**验证 PowerContext 作用**：
-```bash
-# 直接查询 PowerContext 确认记忆已存储
-curl -X POST http://127.0.0.1:8000/v1/memory/search \
-  -H "Content-Type: application/json" \
-  -d '{"scope_id":"smartstudy-default","query":"矩阵乘法","limit":5}'
+```powershell
+.venv\Scripts\python.exe -m pytest tests -v
+.venv\Scripts\python.exe tools\verify.py
 ```
-应返回刚记录的学习内容。
 
-### 样例 2：智能复习检索
+无需预先启动任何服务。测试/验收各自自动选择空闲端口和独立数据目录，不修改日常使用的学习数据。`verify.py` 会启动真实的官方 PowerContext，验证初始空状态、两条中文学习记录的保存、历史/统计、检索、完整上下文引用、问答与无匹配结果，之后重启两个服务再核对持久化。只有断言全部通过才输出 `PASS`，并写入 `evidence/verification.json`。
 
-**前置条件**：已记录 2-3 条不同主题的学习记录
+直接核对指定技术的作用，可先打开 `/api/health` 获取真实 `scope_id`，再向 PowerContext 发送以下 JSON：
 
-**操作步骤**：
-1. 点击「智能复习」标签
-2. 输入关键词：`矩阵`
-3. 点击「检索复习内容」
+```http
+POST /v1/atomic-memory/list
+Content-Type: application/json
 
-**预期结果**：
-- 显示与「矩阵」相关的学习记录
-- 每条记录显示相关度百分比
-- 上下文摘要区域展示 PowerContext 组装的相关记忆
-
-### 样例 3：学习问答
-
-**操作步骤**：
-1. 点击「学习问答」标签
-2. 输入问题：`我学过哪些数学相关的内容？`
-3. 点击发送
-
-**预期结果**：
-- 助手回复基于 PowerContext 检索到的相关记忆
-- 显示检索到的上下文信息
-- 给出个性化复习建议
-
-## API 文档
-
-启动服务后访问 `http://localhost:8080/docs` 查看完整的 API 文档（Swagger UI）。
-
-### 主要端点
-
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/health` | 健康检查，含 PowerContext 连接状态 |
-| POST | `/api/study/record` | 记录一次学习 |
-| POST | `/api/study/search` | 搜索学习记忆 |
-| POST | `/api/study/review` | 获取复习建议 |
-| GET | `/api/study/history` | 获取学习历史 |
-| POST | `/api/chat` | 基于记忆的问答 |
-| GET | `/api/stats` | 获取学习统计 |
-
-## 项目结构
-
+{"scope_id":"替换为实际返回的 scope_id","kind":"study-session","states":["active"],"limit":100}
 ```
+
+应返回 `items`，其中 `text` 是实际学习内容，`artifact` 与保存响应的记忆引用一致。检索使用 `/v1/memory/search`，上下文使用 `/v1/context/prepare`，同样传入真实 Scope ID。
+
+## API 与结构
+
+| 方法 | SmartStudy 路径 | 功能 |
+| --- | --- | --- |
+| GET | `/api/health` | 检查 PowerContext 就绪和空间可访问性，返回真实 Scope ID |
+| POST | `/api/study/record` | 保存学习记忆，返回真实 Artifact 引用 |
+| GET | `/api/study/history?limit=50` | 最近学习及总记录数 |
+| GET | `/api/stats` | 全量统计、时长与主题分布 |
+| POST | `/api/study/search` | 检索命中和完整上下文 |
+| POST | `/api/study/review` | 复习主题、掌握程度及完整上下文 |
+| POST | `/api/chat` | 基于真实记忆的规则式学习建议 |
+
+PowerContext 使用的实际接口：`GET /health/ready`、`GET /v1/scopes/{scope_id}`、`POST /v1/scopes`、`POST /v1/memory/remember`、`POST /v1/atomic-memory/list`、`POST /v1/memory/search`、`POST /v1/context/prepare`。所有学习记录均由 PowerContext 持久化，没有另建学习数据数据库或以本地示例数据兜底。
+
+```text
 qoder/
-├── README.md              # 本文件
-├── requirements.txt       # Python 依赖
-├── .env.example           # 环境变量模板
-├── server.py              # FastAPI 后端（含 PowerContext 集成）
-├── static/
-│   ├── index.html         # 前端页面
-│   ├── style.css          # 样式
-│   └── app.js             # 前端逻辑
-└── tests/
-    └── test_server.py     # 接口测试
+  server.py               FastAPI 后端及 PowerContext 桥接
+  requirements.txt        固定主要运行与测试依赖
+  .env.example            已有 PowerContext 服务的配置模板
+  static/                 完整应用页面、样式和交互
+  web/                    Qoder Sites 静态展示演示
+  tools/run_local.py      双服务启动、停止和持久化配置
+  tools/verify.py         真实 HTTP 流程和重启验收
+  tests/test_server.py    自动化回归测试
+  evidence/               修复前失败响应和修复后真实验收报告
+  qoder.md                原始赛题
 ```
 
-## Qoder 开发记录
+## 开发记录与赛事材料
 
-本项目使用 Qoder 桌面端完成以下开发工作：
+原版本 README 记录了 Qoder 参与需求分析、架构设计、后端与前端生成、调试、文档和站点发布。本次可运行性修复由 Codex 完成，不能作为新增 Qoder 使用记录。赛事要求的 Qoder UID、原始对话截图/录屏及公开站点访问验证，仍应以参赛者已有的真实材料提交；自动测试不替代这些证明。
 
-| 环节 | Qoder 完成的内容 |
-|------|-----------------|
-| 需求分析 | 分析竞赛要求，确定项目方向和功能范围 |
-| 架构设计 | 设计前后端分离架构，规划 PowerContext API 集成方案 |
-| 后端编码 | 生成 FastAPI 服务器代码，包含所有 API 端点和 PowerContext 桥接逻辑 |
-| 前端编码 | 生成完整的单页应用，包含学习面板、记录表单、复习检索、问答交互 |
-| 调试优化 | 修复 API 调用错误，优化前端交互体验 |
-| 文档生成 | 生成 README、验证样例和运行说明 |
-| 站点发布 | 通过 Qoder Sites 发布项目网站 |
-
-## 许可证
-
-Apache License 2.0
+许可证：Apache License 2.0。

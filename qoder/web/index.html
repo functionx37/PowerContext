@@ -56,7 +56,7 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">🧠</div>
-                        <div class="stat-value" id="pcStatus">✓</div>
+                        <div class="stat-value" id="pcStatus">演示</div>
                         <div class="stat-label">PowerContext</div>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
                             <div id="reviewTopics"></div>
                         </div>
                         <div class="review-section">
-                            <h3>上下文摘要（PowerContext /v1/context/prepare 返回）</h3>
+                            <h3>上下文示例（静态演示）</h3>
                             <div id="reviewContext" class="context-box"></div>
                         </div>
                     </div>
@@ -231,23 +231,19 @@
                     <div class="about-section">
                         <h3>本地运行（完整功能）</h3>
                         <div class="code-block">
-                            <pre><code># 1. 克隆仓库并进入 qoder 目录
-git clone https://github.com/oceanbase/powercontext.git
-cd powercontext/qoder
+                            <pre><code># Windows PowerShell，Python 3.11+
+# 在参赛仓库的 qoder 目录执行
+cd qoder
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
 
-# 2. 安装 Python 依赖
-pip install -r requirements.txt
+# 启动真实 PowerContext 和学习应用
+.venv\Scripts\python.exe tools\run_local.py
 
-# 3. 配置环境变量
-cp .env.example .env
-# 编辑 .env，设置 PowerContext 服务地址
+# 打开 http://127.0.0.1:8080
 
-# 4. 启动 PowerContext 服务（参考官方文档）
-
-# 5. 启动 SmartStudy 后端
-python server.py
-
-# 6. 访问 http://localhost:8080</code></pre>
+# 自动验收：真实记忆读写和重启恢复
+.venv\Scripts\python.exe tools\verify.py</code></pre>
                         </div>
                     </div>
 

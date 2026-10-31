@@ -1,0 +1,45 @@
+{
+  "verified_at": "2026-10-31T10:27:48.067580+00:00",
+  "powercontext_version": "1.4.1",
+  "python_version": "3.12.8",
+  "backend": "official-powercontext",
+  "checks": [
+    "fresh_scope_and_empty_state",
+    "record_history_stats_and_note_label_safety",
+    "real_search_review_and_complete_cited_context",
+    "grounded_chat_overview_and_no_match",
+    "frontend_assets",
+    "both_processes_restarted_persistent_records_and_recall"
+  ],
+  "scope_id": "scp_3t4aaj5x16ngrczd529ygaayws",
+  "memory_refs": [
+    {
+      "family": "atomic-memory",
+      "artifact_id": "art_b24f36012e3c477f804d7dfe2e47c555",
+      "revision": 1
+    },
+    {
+      "family": "atomic-memory",
+      "artifact_id": "art_1f2a0e3ebccb41cea670915e2c5412e4",
+      "revision": 1
+    }
+  ],
+  "stats": {
+    "total_sessions": 2,
+    "total_minutes": 75,
+    "unique_topics": 2,
+    "top_topics": [
+      [
+        "线性代数 - 矩阵求逆",
+        1
+      ],
+      [
+        "线性代数 - 矩阵乘法",
+        1
+      ]
+    ]
+  },
+  "context_bytes": 1195,
+  "suggestion": "根据你的学习记录，找到 2 条相关内容：线性代数 - 矩阵求逆、线性代数 - 矩阵乘法。建议优先复习「线性代数 - 矩阵求逆」（掌握程度 3/10），结合笔记做练习。",
+  "passed": true
+}

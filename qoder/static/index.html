@@ -135,7 +135,7 @@
             <section class="tab-content" id="tab-chat">
                 <div class="card chat-card">
                     <h2>💬 学习问答</h2>
-                    <p class="form-desc">基于你的学习记录（PowerContext 记忆）进行问答，获取个性化建议</p>
+                    <p class="form-desc">检索你的真实学习记录，按掌握程度给出复习建议；当前采用规则生成建议</p>
                     <div class="chat-area">
                         <div id="chatMessages" class="chat-messages">
                             <div class="message assistant">
@@ -204,7 +204,7 @@
                                 <div class="flow-num">1</div>
                                 <div class="flow-text">
                                     <strong>记录阶段</strong><br>
-                                    用户提交学习记录 → 后端调用 <code>POST /v1/memory/remember</code> → PowerContext 存储为带标签的记忆条目
+                                    用户提交学习记录 → 后端调用 <code>POST /v1/memory/remember</code> → PowerContext 保存学习记忆及来源引用
                                 </div>
                             </div>
                             <div class="flow-arrow">↓</div>
@@ -212,7 +212,7 @@
                                 <div class="flow-num">2</div>
                                 <div class="flow-text">
                                     <strong>检索阶段</strong><br>
-                                    用户发起复习/问答 → 后端调用 <code>POST /v1/memory/search</code> → PowerContext 按语义相似度返回相关记忆
+                                    用户发起复习/问答 → 后端调用 <code>POST /v1/memory/search</code> → PowerContext 返回相关记忆；默认无模型时采用全文检索
                                 </div>
                             </div>
                             <div class="flow-arrow">↓</div>
@@ -229,21 +229,18 @@
                     <div class="about-section">
                         <h3>快速开始</h3>
                         <div class="code-block">
-                            <pre><code># 1. 安装依赖
+                            <pre><code># Windows PowerShell，Python 3.11+
 cd qoder/
-pip install -r requirements.txt
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
 
-# 2. 配置环境变量
-cp .env.example .env
-# 编辑 .env，填入 PowerContext 服务地址和 Token
+# 启动真实 PowerContext 和学习应用（数据保存在 .runtime）
+.venv\Scripts\python.exe tools\run_local.py
 
-# 3. 启动 PowerContext 服务（如未运行）
-# 参考 PowerContext 文档部署
+# 打开 http://127.0.0.1:8080
 
-# 4. 启动 SmartStudy 后端
-python server.py
-
-# 5. 访问 http://localhost:8080</code></pre>
+# 自动验收：真实记忆读写和重启恢复
+.venv\Scripts\python.exe tools\verify.py</code></pre>
                         </div>
                     </div>
 

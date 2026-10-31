@@ -1,0 +1,41 @@
+{
+  "/api/health": {
+    "status": 200,
+    "body": {
+      "status": "ok",
+      "powercontext": "connected",
+      "scope_id": "smartstudy-default"
+    }
+  },
+  "/api/study/record": {
+    "status": 502,
+    "body": {
+      "detail": "PowerContext remember failed: {\"error\":{\"code\":\"scope_not_found\",\"message\":\"The requested Scope was not found.\",\"details\":null}}"
+    }
+  },
+  "/api/study/history": {
+    "status": 200,
+    "body": {
+      "records": [],
+      "total": 0
+    }
+  },
+  "/api/stats": {
+    "status": 200,
+    "body": {
+      "total_sessions": 0,
+      "total_minutes": 0,
+      "unique_topics": 0,
+      "top_topics": []
+    }
+  },
+  "/api/study/review": {
+    "status": 200,
+    "body": {
+      "query": "矩阵",
+      "related_topics": [],
+      "context_summary": "",
+      "total_memories_found": 0
+    }
+  }
+}
