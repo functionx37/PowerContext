@@ -18,6 +18,7 @@ import json
 import math
 import re
 from collections import Counter
+from dataclasses import dataclass
 from itertools import pairwise
 
 from powercontext.artifacts import ArtifactAddress
@@ -80,8 +81,66 @@ _STOP = frozenset([
 
 
 def _tokens(text):
-    words = re.findall(r"[a-z]+|\d+", text.lower())
-    return [word[:-1] if len(word) > 4 and word.endswith("s") else word for word in words if word not in _STOP]
+    words = re.findall(r"[a-z]+|\d+|[^\W\da-z_]+", text.lower())
+    result = []
+    for word in words:
+        if re.search(r"[\u3400-\u9fff]", word):
+            result.extend(word)
+            result.extend(left + right for left, right in pairwise(word))
+            continue
+        if word in _STOP:
+            continue
+        if word.endswith("ies"):
+            word = word[:-3] + "y"
+        elif len(word) > 4 and word.endswith("s") and not word.endswith(("ss", "us")):
+            word = word[:-1]
+        for root in (
+            "activat",
+            "inhibit",
+            "express",
+            "differenti",
+            "prolifer",
+            "associat",
+            "induc",
+            "reduc",
+            "increas",
+            "decreas",
+            "mutat",
+            "regulat",
+            "infect",
+            "treat",
+            "develop",
+            "signal",
+            "surviv",
+            "bind",
+        ):
+            if word.startswith(root):
+                word = root
+                break
+        result.append(word)
+    return result
+
+
+def _sentence_spans(text):
+    # Keep abbreviations, decimals, and punctuation inside the original sentence.
+    boundaries = [0]
+    for match in re.finditer(r"[.!?][\"'\u2019\u201d\)\]]*\s+|[\u3002\uff01\uff1f]\s*|\n+", text):
+        prefix = text[: match.start() + 1]
+        if "\n" not in match.group() and re.search(
+            r"(?:\b(?:e\.g|i\.e|et al|vs|Fig|Dr|Mr|Mrs|Prof)|\b[A-Z])\.$",
+            prefix,
+            re.IGNORECASE,
+        ):
+            continue
+        boundaries.append(match.end())
+    boundaries.append(len(text))
+    for start, end in pairwise(boundaries):
+        while start < end and text[start].isspace():
+            start += 1
+        while end > start and text[end - 1].isspace():
+            end -= 1
+        if start < end:
+            yield start, end
 
 
 def _render(fragments):
@@ -117,9 +176,24 @@ def _identity(address):
     )
 
 
-def select_evidence(request, candidates):  # noqa: C901 - extract, rank and budget one candidate set
-    sentences, texts = [], {}
-    seen = set()
+@dataclass(frozen=True)
+class _Sentence:
+    fragment: PreparedEvidenceFragment
+    words: frozenset[str]
+    score: float
+
+
+@dataclass(frozen=True)
+class _Selection:
+    indices: tuple[int, ...]
+    fragments: tuple[PreparedEvidenceFragment, ...]
+    words: frozenset[str]
+    score: float
+    cost: int
+
+
+def _sentences(request, candidates):
+    entries, seen = [], set()
     for group in candidates:
         for hit in group.hits:
             address = MemoryEntryAddress(
@@ -127,55 +201,120 @@ def select_evidence(request, candidates):  # noqa: C901 - extract, rank and budg
                 entry_id=hit.entry_id,
                 entry_version_id=hit.entry_version_id,
             )
-            if _identity(address) in seen:
+            if _identity(address) not in seen:
+                seen.add(_identity(address))
+                entries.append((address, hit.text))
+    query_words = _tokens(request.query)
+    query = dict.fromkeys(query_words)
+    frequencies = Counter(word for _, text in entries for word in set(_tokens(text)))
+    weights = {word: math.log1p((len(entries) + 0.5) / (frequencies[word] + 0.5)) for word in query}
+    total = sum(weights.values()) or 1
+    bigrams = set(pairwise(query_words))
+    sentences, texts = [], {_identity(address): text for address, text in entries}
+    for address, text in entries:
+        spans = list(_sentence_spans(text))
+        words = [_tokens(text[start:end]) for start, end in spans]
+        coverages = [sum(weights.get(word, 0) for word in sorted(set(value))) / total for value in words]
+        document_weight = 0.5 + 0.5 * max(coverages, default=0)
+        seen_text = set()
+        for index, ((start, end), value, coverage) in enumerate(zip(spans, words, coverages, strict=True)):
+            literal = text[start:end]
+            if literal in seen_text:
                 continue
-            seen.add(_identity(address))
-            texts[_identity(address)] = hit.text
-            # Splitting only at whitespace after punctuation preserves decimal numbers
-            # and every original character inside each sentence.
-            boundaries = [0, *(m.end() for m in re.finditer(r"(?<=[.!?])\s+|\n+", hit.text)), len(hit.text)]
-            for start, end in pairwise(boundaries):
-                while start < end and hit.text[start].isspace():
-                    start += 1
-                while end > start and hit.text[end - 1].isspace():
-                    end -= 1
-                if start < end:
-                    sentences.append((address, start, end, Counter(_tokens(hit.text[start:end]))))
-    query = Counter(_tokens(request.query))
-    frequencies = Counter(term for _, _, _, words in sentences for term in words)
-    ranked = []
-    for index, (address, start, end, words) in enumerate(sentences):
-        score = sum(
-            math.log(1 + (len(sentences) + 0.5) / (frequencies[term] + 0.5)) * min(count, words[term])
-            for term, count in query.items()
-            if words[term]
-        )
-        score /= math.sqrt(100 + len(texts[_identity(address)][start:end].encode("utf-8")))
-        ranked.append((score, index))
-    selected = []
-    for score, index in sorted(ranked, key=lambda pair: (-pair[0], pair[1])):
-        if score <= 0:
-            continue
-        address, start, end, _ = sentences[index]
-        proposed = list(selected)
-        # Coalesce adjacent evidence to avoid paying citation overhead repeatedly.
-        merged = []
-        for fragment in proposed:
-            if fragment.address == address and (
-                texts[_identity(address)][min(end, fragment.end) : max(start, fragment.start)].strip() == ""
+            seen_text.add(literal)
+            # Neighbouring result sentences can carry numbers or anaphora without
+            # repeating the claim's entities. Retain them as lower-weight evidence.
+            neighbour = max(coverages[max(0, index - 1) : index + 2], default=0)
+            if not coverage and (
+                neighbour < 0.5
+                or not re.search(
+                    r"\b(this|these|thus|therefore|result|conclu|suggest|demonstrat)|\d", literal, re.IGNORECASE
+                )
             ):
-                start, end = min(start, fragment.start), max(end, fragment.end)
-            else:
-                merged.append(fragment)
-        merged.append(PreparedEvidenceFragment(address, start, end, texts[_identity(address)][start:end]))
-        content = _render(merged)
-        if len(content.encode("utf-8")) <= request.max_bytes:
-            selected = merged
-    if not selected:
+                continue
+            phrase = len(bigrams.intersection(pairwise(value))) / (len(bigrams) or 1)
+            result = bool(
+                re.search(
+                    r"\b(result|conclu|found|findings|show|demonstrat|observ|reveal|suggest|confirm|significant)",
+                    literal,
+                    re.IGNORECASE,
+                )
+            )
+            score = document_weight * (coverage**1.6 + 0.25 * phrase) * (1.2 if result else 1)
+            if not coverage:
+                score = document_weight * neighbour * 0.12
+            sentences.append(_Sentence(PreparedEvidenceFragment(address, start, end, literal), frozenset(value), score))
+    return sentences, texts, weights
+
+
+def _merge(fragments, fragment, texts):
+    fragments = sorted((*fragments, fragment), key=lambda f: (_identity(f.address), f.start, f.end))
+    merged = []
+    for current in fragments:
+        if merged and merged[-1].address == current.address:
+            previous = merged[-1]
+            text = texts[_identity(current.address)]
+            if previous.end >= current.start or not text[previous.end : current.start].strip():
+                end = max(previous.end, current.end)
+                merged[-1] = PreparedEvidenceFragment(current.address, previous.start, end, text[previous.start : end])
+                continue
+        merged.append(current)
+    return tuple(merged)
+
+
+def _prune(selections, width=64):
+    # Preserve different partial selections: even a currently dominated state can
+    # become best when an adjacent sentence shares its citation. Reserve space for
+    # cheap states as well, so later evidence can replace an expensive early choice.
+    if len(selections) <= width:
+        return selections
+    by_score = sorted(selections, key=lambda state: (-state.score, state.cost))[: width * 3 // 4]
+    chosen = {state.indices for state in by_score}
+    for state in sorted(selections, key=lambda state: (state.cost, -state.score)):
+        if state.indices not in chosen:
+            by_score.append(state)
+            chosen.add(state.indices)
+        if len(by_score) == width:
+            break
+    return by_score
+
+
+def select_evidence(request, candidates):
+    sentences, texts, weights = _sentences(request, candidates)
+    total = sum(weights.values()) or 1
+    empty = _Selection((), (), frozenset(), 0, 0)
+    states = [empty]
+    # Process in source order: adjacent sentences can then share a citation as
+    # soon as they are considered. Bound work for long recalled documents.
+    ranked = sorted(range(len(sentences)), key=lambda i: (-sentences[i].score, i))[:96]
+    for index in sorted(ranked):
+        sentence = sentences[index]
+        proposals = list(states)
+        for state in states:
+            fragments = _merge(state.fragments, sentence.fragment, texts)
+            cost = len(_render(fragments).encode("utf-8"))
+            if cost > request.max_bytes:
+                continue
+            # Discount repetition without dropping a distinct quantitative result
+            # or a refutation that differs in only a few words.
+            redundancy = max(
+                (
+                    len(sentence.words & sentences[i].words) / (len(sentence.words | sentences[i].words) or 1)
+                    for i in state.indices
+                ),
+                default=0,
+            )
+            words = state.words | sentence.words
+            new_coverage = sum(weights.get(word, 0) for word in sorted(words - state.words)) / total
+            score = state.score + sentence.score * (1 - 0.5 * redundancy) + 0.6 * new_coverage
+            proposals.append(_Selection((*state.indices, index), fragments, words, score, cost))
+        states = _prune(proposals)
+    best = max(states, key=lambda state: (state.score, -state.cost))
+    if not best.fragments:
         return PreparedContextBuild(context=PreparedContext(status="empty", content=None, content_bytes=0), origins=())
-    content = _render(selected)
+    content = _render(best.fragments)
     return PreparedContextBuild(
         context=PreparedContext(status="ready", content=content, content_bytes=len(content.encode("utf-8"))),
-        origins=tuple(f.address for f in selected),
-        fragments=tuple(selected),
+        origins=tuple(f.address for f in best.fragments),
+        fragments=best.fragments,
     )
