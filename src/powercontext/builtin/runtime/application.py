@@ -828,6 +828,15 @@ class ScopedContextApplication:
         self._runtime = runtime
         self.scope_id = validate_scope_id(scope_id)
 
+    async def prepare_incremental(self, request: PrepareContextRequest, base_pack=None):
+        from powercontext.builtin.runtime.context_pack import ContextPack, ContextPackDelta
+
+        if base_pack is not None:
+            base_pack = ContextPack.from_bytes(base_pack.to_bytes())
+        prepared = await self.prepare(request)
+        target = ContextPack.from_content(prepared.content)
+        return target if base_pack is None else ContextPackDelta.between(base_pack, target)
+
     async def prepare(
         self,
         request: PrepareContextRequest,
@@ -2971,6 +2980,11 @@ def _log_scheduled_processing(
 
 class BuiltinRuntime:
     """Add business-specific operations over composed built-in contexts."""
+
+    if TYPE_CHECKING:
+        from powercontext.builtin.runtime.source_lifecycle import SourceLifecycleApplication
+
+        lifecycle: SourceLifecycleApplication
 
     def __init__(
         self,

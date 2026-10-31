@@ -656,6 +656,9 @@ async def open_builtin_runtime(
         runtime.artifact_processing_supervisor = await resources.enter_async_context(
             _open_artifact_processing_supervisor(config, contexts, processing_bindings, tracing=tracing)
         )
+        from powercontext.builtin.runtime.source_lifecycle import SourceLifecycleApplication
+
+        runtime.lifecycle = SourceLifecycleApplication(runtime, contexts.database)
         contexts.profiles.operation_context = runtime._operation
         if config.handoff_report.enabled:
             runtime.handoff_report = HandoffReportApplication(
@@ -787,6 +790,7 @@ def _artifact_processing_bindings(  # noqa: C901 - validate and assemble one reg
                 if family == "skill"
                 else SourceProcessingPendingProvider(contexts.database, binding, family),
                 automatic_scope_filter=enabled_profile_scopes if family == "profile" else None,
+                source_count_threshold=getattr(config.runtime, f"{prefix}_source_count_threshold", None),
             )
         )
     _validate_processing_registrations(configured)
@@ -963,7 +967,10 @@ async def open_builtin_contexts(
     indexes = [OceanBaseMemoryFTSIndex()]
     if embedding_model is not None:
         indexes.append(OceanBaseMemoryVectorIndex(embedding_model.profile))
-    index = CompositeMemoryIndex(*indexes)
+    from powercontext.builtin.persistence.seekdb.memory_index import SeekDBMemoryIndex
+
+    index_class = SeekDBMemoryIndex if isinstance(database, SeekDBConfig) else CompositeMemoryIndex
+    index = index_class(*indexes)
     topic_indexes: list[TopicMemoryIndex] = [OceanBaseTopicMemoryFTSIndex()]
     if embedding_model is not None:
         topic_indexes.append(OceanBaseTopicMemoryVectorIndex(embedding_model.profile))

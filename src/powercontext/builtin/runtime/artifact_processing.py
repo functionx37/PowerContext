@@ -117,6 +117,7 @@ class ArtifactProcessingBinding:
     # Only automatic admission is filtered; already accepted requests retain
     # their own Worker authorization and domain completion semantics.
     automatic_scope_filter: Callable[[AsyncConnection, tuple[str, ...]], Awaitable[frozenset[str]]] | None = None
+    source_count_threshold: int | None = None
 
     def __post_init__(self) -> None:
         if not self.binding_name or self.binding_name != self.binding_name.strip():
@@ -392,6 +393,7 @@ class _FamilyState:
     running: dict[str, _RunningWorker] = field(default_factory=dict)
     retries: dict[str, _RetryState] = field(default_factory=dict)
     requested_after: int = 0
+    count_after: int = 0
     scan_after: int = 0
     scan_generation: int = 0
     scan_in_progress: bool = False
@@ -648,6 +650,8 @@ class ArtifactProcessingSupervisor:
                 state.next_discovery_at = loop.time() + _DISCOVERY_PAGE_DELAY_SECONDS
         else:
             state.reconcile_complete = True
+        if binding.source_count_threshold is not None:
+            await self._discover_source_count(state)
         # Alternate discovery channels so explicit traffic cannot monopolize admission.
         state.automatic_next = not state.automatic_next
         if state.automatic_next:
@@ -656,6 +660,47 @@ class ArtifactProcessingSupervisor:
         else:
             await self._discover_requested(state)
             await self._discover_automatic(state)
+
+    async def _discover_source_count(self, state: _FamilyState) -> None:
+        from powercontext.builtin.persistence.cursors import SourceCursorRepository
+        from powercontext.builtin.persistence.tables import SOURCE_JOURNAL_HEADS_TABLE
+
+        capacity = self._fresh_capacity(state)
+        if capacity <= 0:
+            return
+        admitted = []
+        async with self._database.transaction() as connection:
+            await self._leases.require_fence(connection, self._require_current_fence())
+            rows = await self._intents.scan(
+                connection,
+                state.binding.binding_name,
+                after_sequence=state.count_after,
+                limit=min(capacity, _DISCOVERY_PAGE_SIZE),
+                dirty_only=True,
+            )
+            scopes = tuple(row.scope_id for row in rows)
+            cursors = await SourceCursorRepository().load_many(connection, scopes, state.binding.binding_name)
+            heads = SOURCE_JOURNAL_HEADS_TABLE
+            positions = {
+                row[0]: row[1]
+                for row in (
+                    await connection.execute(
+                        select(heads.c.scope_id, heads.c.position).where(heads.c.scope_id.in_(scopes))
+                    )
+                ).all()
+            }
+            for row in rows:
+                if row.scope_id in state.queued or row.scope_id in state.running or row.scope_id in state.retries:
+                    continue
+                cursor = cursors.get(row.scope_id)
+                pending = positions.get(row.scope_id, 0) - (0 if cursor is None else cursor.cursor.sequence)
+                if pending >= state.binding.source_count_threshold:
+                    if row.requested_generation == row.handled_generation:
+                        await self._intents.request(connection, row.scope_id, state.binding.binding_name)
+                    admitted.append(row.scope_id)
+        state.count_after = rows[-1].pending_sequence if len(rows) == min(capacity, _DISCOVERY_PAGE_SIZE) else 0
+        for scope in admitted:
+            self._enqueue(state, scope)
 
     async def _discover_requested(self, state: _FamilyState) -> None:
         capacity = self._fresh_capacity(state)
@@ -1093,6 +1138,8 @@ class ArtifactProcessingSupervisor:
                 continue
             if state.next_schedule_at is not None:
                 deadlines.append(state.next_schedule_at)
+            if state.binding.source_count_threshold is not None:
+                deadlines.append(now + self._tick)
             if state.discovery_pending or state.scan_in_progress or not state.reconcile_complete or state.degraded:
                 deadlines.append(max(now, state.next_discovery_at))
         return None if not deadlines else max(0.001, min(deadlines) - now)

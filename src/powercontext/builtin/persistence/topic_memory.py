@@ -54,6 +54,7 @@ from powercontext.builtin.persistence.supervision import database_utc_now
 from powercontext.builtin.persistence.tables import (
     ARTIFACT_HEADS_TABLE,
     ARTIFACTS_TABLE,
+    SOURCE_LIFECYCLE_NODES_TABLE,
     TOPIC_MEMORY_ACTIVE_CHUNKS_TABLE,
     TOPIC_MEMORY_ACTIVE_TOPICS_TABLE,
     TOPIC_MEMORY_RETRIEVAL_SHAPE_TABLE,
@@ -408,6 +409,17 @@ class TopicMemoryRepository:
                     ),
                 )
             )
+        lifecycle = SOURCE_LIFECYCLE_NODES_TABLE
+        statement = statement.where(
+            ~select(lifecycle.c.node_id)
+            .where(
+                lifecycle.c.scope_id == scope_id,
+                lifecycle.c.kind == "topic",
+                lifecycle.c.artifact_id == TOPIC_MEMORY_ACTIVE_TOPICS_TABLE.c.artifact_id,
+                lifecycle.c.available.is_(False),
+            )
+            .exists()
+        )
         rows = (
             await connection.execute(
                 statement.order_by(
@@ -487,6 +499,23 @@ class TopicMemoryRepository:
             admission=admission,
         )
         channels = await self.index.search(connection, scope_id, request)
+        lifecycle = SOURCE_LIFECYCLE_NODES_TABLE
+        unavailable = set(
+            await connection.scalars(
+                select(lifecycle.c.artifact_id).where(
+                    lifecycle.c.scope_id == scope_id, lifecycle.c.kind == "topic", lifecycle.c.available.is_(False)
+                )
+            )
+        )
+        if unavailable:
+            channels = channels.model_copy(
+                update={
+                    name: tuple(
+                        hit for hit in getattr(channels, name) if hit.artifact_ref.artifact_id not in unavailable
+                    )
+                    for name in ("topic_fts", "detail_fts", "topic_vector", "detail_vector")
+                }
+            )
         await self._check_retrieval_shape(connection)
         outcome = _fuse_topic_memory_rankings(query, channels, limit, mode=used_mode, admission=admission)
         return TopicMemorySearchResult(
